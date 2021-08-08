@@ -6,8 +6,15 @@ int main(int argc, char **argv)
         fprintf(stderr,"Call: ./a.out file_name\n");
         exit(1);
     }
-    yyin = fopen(argv[1], "r");
+
+    if (0==(yyin = fopen(argv[1],"r")))
+    {
+        printf("Cannot open file %s... \n",argv[1]);
+        exit(1);
+    }
+    
     hashInit();
+
     while(running)
     {  
         tok = yylex();
@@ -23,6 +30,7 @@ int main(int argc, char **argv)
             default: printf("Encontrei %c\n", yytext[0]); break;
         }
     }
+
     printf("Main done! File has %d lines.\n", lineNumber);
     hashPrint();
     exit(0);
