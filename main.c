@@ -7,7 +7,7 @@ int main(int argc, char **argv)
         exit(1);
     }
     yyin = fopen(argv[1], "r");
-
+    hashInit();
     while(running)
     {  
         tok = yylex();
@@ -24,5 +24,6 @@ int main(int argc, char **argv)
         }
     }
     printf("Main done! File has %d lines.\n", lineNumber);
+    hashPrint();
     exit(0);
 }

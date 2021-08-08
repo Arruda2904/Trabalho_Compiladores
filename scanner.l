@@ -1,5 +1,6 @@
 %{
     #include "tokens.h"
+    #include "hash.h"
     int running = 1;  
     int lineNumber = 1;  
 %}
@@ -9,7 +10,7 @@
 %%
 
 int                     {return KW_INT;}
-[0-9]+                  {return LIT_INTEGER;}
+[0-9]+                  {hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER;}
 [-+;{}:]                {return yytext[0];}
 [ \t]    
 "\n"                    {++lineNumber;}   
@@ -24,6 +25,7 @@ int                     {return KW_INT;}
 %%
 
 #include "main.c"
+#include "hash.c"
 
 int yywrap()
   {
