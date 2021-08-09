@@ -1,3 +1,6 @@
+int isRunning(void);
+int getLineNumber(void);
+
 int main(int argc, char **argv)
 {
     int tok;
@@ -15,19 +18,30 @@ int main(int argc, char **argv)
     
     hashInit();
 
-    while(running)
+    while(isRunning())
     {  
         tok = yylex();
-        if(!running)
+        if(!isRunning())
         {
             break;
         }
         switch(tok)
         {
-            case KW_INT: printf("Encontrei KW_INT\n"); break;
-            case LIT_INTEGER: printf("Encontrei LIT_INT\n"); break;
-            case TOKEN_ERROR: printf("Unexpected tokken %d\n",tok); break;
-            default: printf("Encontrei %c\n", yytext[0]); break;
+            
+            case KW_DATA: printf("Encontrei KW_DATA na linha %d\n", getLineNumber()); break;
+            case KW_CHAR: printf("Encontrei KW_CHAR na linha %d\n", getLineNumber()); break;
+            case KW_INT: printf("Encontrei KW_INT na linha %d\n", getLineNumber()); break;
+            case KW_FLOAT: printf("Encontrei KW_FLOAT na linha %d\n", getLineNumber()); break;
+            case KW_IF: printf("Encontrei KW_IF na linha %d\n", getLineNumber()); break;
+            case KW_ELSE: printf("Encontrei KW_ELSE na linha %d\n", getLineNumber()); break;
+            case KW_UNTIL: printf("Encontrei KW_UNTIL na linha %d\n", getLineNumber()); break;
+            case KW_COMEFROM: printf("Encontrei KW_COMEFROM na linha %d\n", getLineNumber()); break;
+            case KW_READ: printf("Encontrei KW_READ na linha %d\n", getLineNumber()); break;
+            case KW_PRINT: printf("Encontrei KW_PRINT na linha %d\n", getLineNumber()); break;
+            case KW_RETURN: printf("Encontrei KW_RETURN na linha %d\n", getLineNumber()); break;
+            case LIT_INTEGER: printf("Encontrei LIT_INT na linha %d\n", getLineNumber()); break;
+            case TOKEN_ERROR: printf("Tokken inesperado %d na linha %d\n",tok, getLineNumber()); break;
+            default: printf("Encontrei %c na linha %d\n", yytext[0], getLineNumber()); break;
         }
     }
 
