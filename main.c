@@ -40,6 +40,12 @@ int main(int argc, char **argv)
             case KW_PRINT: printf("Encontrei KW_PRINT na linha %d\n", getLineNumber()); break;
             case KW_RETURN: printf("Encontrei KW_RETURN na linha %d\n", getLineNumber()); break;
             case LIT_INTEGER: printf("Encontrei LIT_INT na linha %d\n", getLineNumber()); break;
+            case OPERATOR_LE: printf("Encontrei OPERATOR_LE na linha %d\n", getLineNumber()); break;
+            case OPERATOR_GE: printf("Encontrei OPERATOR_GE na linha %d\n", getLineNumber()); break;
+            case OPERATOR_EQ: printf("Encontrei OPERATOR_EQ na linha %d\n", getLineNumber()); break;
+            case OPERATOR_DIF: printf("Encontrei OPERATOR_DIF na linha %d\n", getLineNumber()); break;
+            case OPERATOR_RANGE: printf("Encontrei OPERATOR_RANGE na linha %d\n", getLineNumber()); break;
+
             case TOKEN_ERROR: printf("Tokken inesperado %d na linha %d\n",tok, getLineNumber()); break;
             default: printf("Caracter especial %d na linha %d\n", yytext[0], getLineNumber()); break;
         }
