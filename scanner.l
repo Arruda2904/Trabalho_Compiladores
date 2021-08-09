@@ -21,8 +21,11 @@ read                     {return KW_READ;}
 print                    {return KW_PRINT;}
 return                   {return KW_RETURN;}
 
-[0-9]+                  {hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER;}
-[-+;{}:]                {return yytext[0];}
+[a-z_0-9]+               {hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER;}
+[-;:(){}+*/<>|&~=]       {return (int)yytext[0];}
+"["                      {return (int)yytext[0];}
+"]"                      {return (int)yytext[0];}
+
 [ \t]    
 "\n"                    {++lineNumber;}   
 "//".*              

@@ -41,7 +41,7 @@ int main(int argc, char **argv)
             case KW_RETURN: printf("Encontrei KW_RETURN na linha %d\n", getLineNumber()); break;
             case LIT_INTEGER: printf("Encontrei LIT_INT na linha %d\n", getLineNumber()); break;
             case TOKEN_ERROR: printf("Tokken inesperado %d na linha %d\n",tok, getLineNumber()); break;
-            default: printf("Encontrei %c na linha %d\n", yytext[0], getLineNumber()); break;
+            default: printf("Caracter especial %d na linha %d\n", yytext[0], getLineNumber()); break;
         }
     }
 
