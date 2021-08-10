@@ -21,17 +21,20 @@ read                     {return KW_READ;}
 print                    {return KW_PRINT;}
 return                   {return KW_RETURN;}
 
-[a-zA-Z][a-zA-Z 0-9]+[a-zA-Z0-9]|[a-zA-z][a-zA-z0-9]|[a-zA-Z] {if(yytext[-1] != '"' && (int)yytext[-1] != 39)
-                                  {
-                                    hashInsert(yytext,TK_IDENTIFIER);
-                                    return TK_IDENTIFIER;
-                                  }
-                                 } 
-
-[0-9]+                   {hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER;}
 [-;:(){}+*/<>|&~=]       {return (int)yytext[0];}
 "["                      {return (int)yytext[0];}
 "]"                      {return (int)yytext[0];}
+
+[0-9]+                   {hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER;}
+['].[']               {hashInsert(yytext,LIT_CHAR); return LIT_CHAR;}
+\"(\\.|[^(\n|")])*\"     {hashInsert(yytext,LIT_STRING); return LIT_STRING;}
+
+[a-zA-Z][a-zA-Z0-9 ]+[a-zA-Z0-9]|^[a-zA-z][a-zA-z0-9]$|[a-zA-Z] {if(yytext[-1] != '"' && (int)yytext[-1] != 39)
+                                                                  {
+                                                                    hashInsert(yytext,TK_IDENTIFIER);
+                                                                    return TK_IDENTIFIER;
+                                                                  }
+                                                                } 
 
 "<="                     {return OPERATOR_LE;}
 ">="                     {return OPERATOR_GE;}
@@ -62,6 +65,11 @@ int getLineNumber(void)
 int isRunning(void)
 {
     return running;
+}
+
+void initMe(void)
+{
+    hashInit();
 }
 
 int yywrap()

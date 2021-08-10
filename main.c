@@ -1,5 +1,6 @@
 int isRunning(void);
 int getLineNumber(void);
+void initMe(void);
 
 int main(int argc, char **argv)
 {
@@ -16,7 +17,7 @@ int main(int argc, char **argv)
         exit(1);
     }
     
-    hashInit();
+    initMe();
 
     while(isRunning())
     {  
@@ -41,8 +42,8 @@ int main(int argc, char **argv)
             case KW_RETURN: printf("Encontrei KW_RETURN na linha %d\n", getLineNumber()); break;
 
             case LIT_INTEGER: printf("Encontrei LIT_INT na linha %d\n", getLineNumber()); break;
-            case LIT_CHAR: printf("Encontrei LIT_INT na linha %d\n", getLineNumber()); break;
-            case LIT_STRING: printf("Encontrei LIT_INT na linha %d\n", getLineNumber()); break;
+            case LIT_CHAR: printf("Encontrei LIT_CHAR na linha %d\n", getLineNumber()); break;
+            case LIT_STRING: printf("Encontrei LIT_STRING na linha %d\n", getLineNumber()); break;
 
             case OPERATOR_LE: printf("Encontrei OPERATOR_LE na linha %d\n", getLineNumber()); break;
             case OPERATOR_GE: printf("Encontrei OPERATOR_GE na linha %d\n", getLineNumber()); break;
