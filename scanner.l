@@ -21,7 +21,7 @@ read                     {return KW_READ;}
 print                    {return KW_PRINT;}
 return                   {return KW_RETURN;}
 
-[a-zA-Z][a-zA-Z 0-9]+[a-zA-Z0-9] {if(yytext[-1] != '"' && (int)yytext[-1] != 39)
+[a-zA-Z][a-zA-Z 0-9]+[a-zA-Z0-9]|[a-zA-z][a-zA-z0-9]|[a-zA-Z] {if(yytext[-1] != '"' && (int)yytext[-1] != 39)
                                   {
                                     hashInsert(yytext,TK_IDENTIFIER);
                                     return TK_IDENTIFIER;
