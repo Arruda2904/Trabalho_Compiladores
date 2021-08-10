@@ -1,0 +1,2 @@
+- Arrumar os identificadores para aceitar 1 e 2 caracteres;
+- Literais, tanto char quanto string;

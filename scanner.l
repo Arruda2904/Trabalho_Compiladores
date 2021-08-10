@@ -21,6 +21,13 @@ read                     {return KW_READ;}
 print                    {return KW_PRINT;}
 return                   {return KW_RETURN;}
 
+[a-zA-Z][a-zA-Z 0-9]+[a-zA-Z0-9] {if(yytext[-1] != '"' && (int)yytext[-1] != 39)
+                                  {
+                                    hashInsert(yytext,TK_IDENTIFIER);
+                                    return TK_IDENTIFIER;
+                                  }
+                                 } 
+
 [0-9]+                   {hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER;}
 [-;:(){}+*/<>|&~=]       {return (int)yytext[0];}
 "["                      {return (int)yytext[0];}
