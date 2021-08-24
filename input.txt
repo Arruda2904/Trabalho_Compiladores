@@ -1,3 +1,1 @@
-int = 12 ,
-char: c = 'x';
-
+xxx
