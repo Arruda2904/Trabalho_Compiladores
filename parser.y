@@ -27,14 +27,31 @@
 
 %%
 
-programa: LIT_INTEGER 
-    | TK_IDENTIFIER
+programa: decl
+    ;
+
+decl: dec ',' decl
+    | dec
+    ;
+
+dec: KW_INT ':' TK_IDENTIFIER
+    | KW_INT ':' TK_IDENTIFIER '(' ')' body
+    ;
+
+body: '{' lcmd '}'
+    ;
+
+lcmd: cmd lcmd
+    |
+    ;
+
+cmd: TK_IDENTIFIER '=' LIT_INTEGER
     ;
 
 %%
 
 int yyerror()
 {
-    fprintf(stderr,"Syntaxe error.\n");
-    return 1;
+    fprintf(stderr,"Syntaxe error %s at line %d\n", yytext, getLineNumber());
+    exit(3);
 }

@@ -474,18 +474,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  4
+#define YYFINAL  6
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   2
+#define YYLAST   13
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  31
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  2
+#define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  3
+#define YYNRULES  10
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  5
+#define YYNSTATES  21
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   278
@@ -504,15 +504,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+      26,    27,     2,     2,    24,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,    25,     2,
+       2,    30,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,    28,     2,    29,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -534,7 +534,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    30,    30,    31
+       0,    30,    30,    33,    34,    37,    38,    41,    44,    45,
+      48
 };
 #endif
 
@@ -547,7 +548,9 @@ static const char *const yytname[] =
   "KW_DATA", "KW_IF", "KW_ELSE", "KW_UNTIL", "KW_COMEFROM", "KW_READ",
   "KW_PRINT", "KW_RETURN", "OPERATOR_LE", "OPERATOR_GE", "OPERATOR_EQ",
   "OPERATOR_DIF", "OPERATOR_RANGE", "TK_IDENTIFIER", "LIT_INTEGER",
-  "LIT_CHAR", "LIT_STRING", "TOKEN_ERROR", "$accept", "programa", YY_NULLPTR
+  "LIT_CHAR", "LIT_STRING", "TOKEN_ERROR", "','", "':'", "'('", "')'",
+  "'{'", "'}'", "'='", "$accept", "programa", "decl", "dec", "body",
+  "lcmd", "cmd", YY_NULLPTR
 };
 #endif
 
@@ -558,11 +561,12 @@ static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278
+     275,   276,   277,   278,    44,    58,    40,    41,   123,   125,
+      61
 };
 # endif
 
-#define YYPACT_NINF (-20)
+#define YYPACT_NINF (-25)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -576,7 +580,9 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -19,   -20,   -20,     2,   -20
+      -4,   -24,     2,   -25,   -21,   -15,   -25,    -4,   -20,   -25,
+     -22,   -19,   -12,   -25,   -22,   -18,   -12,   -10,   -25,   -25,
+     -25
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -584,19 +590,21 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     3,     2,     0,     1
+       0,     0,     0,     2,     4,     0,     1,     0,     5,     3,
+       0,     0,     9,     6,     0,     0,     9,     0,     7,     8,
+      10
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -20,   -20
+     -25,   -25,     5,   -25,   -25,    -3,   -25
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     3
+      -1,     2,     3,     4,    13,    15,    16
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -604,31 +612,37 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       1,     2,     4
+       1,     5,     6,     7,     8,    11,    10,    14,    17,    12,
+      20,    18,     9,    19
 };
 
 static const yytype_int8 yycheck[] =
 {
-      19,    20,     0
+       4,    25,     0,    24,    19,    27,    26,    19,    30,    28,
+      20,    29,     7,    16
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    19,    20,    25,     0
+       0,     4,    32,    33,    34,    25,     0,    24,    19,    33,
+      26,    27,    28,    35,    19,    36,    37,    30,    29,    36,
+      20
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    24,    25,    25
+       0,    31,    32,    33,    33,    34,    34,    35,    36,    36,
+      37
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     1
+       0,     2,     1,     3,     1,     3,     6,     3,     2,     0,
+       3
 };
 
 
@@ -1324,7 +1338,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1328 "y.tab.c"
+#line 1342 "y.tab.c"
 
       default: break;
     }
@@ -1556,11 +1570,11 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 34 "parser.y"
+#line 51 "parser.y"
 
 
 int yyerror()
 {
-    fprintf(stderr,"Syntaxe error.\n");
-    return 1;
+    fprintf(stderr,"Syntaxe error %s at line %d\n", yytext, getLineNumber());
+    exit(3);
 }

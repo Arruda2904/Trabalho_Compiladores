@@ -1,9 +1,13 @@
+#include <stdlib.h>
+#include <stdio.h>
+
 int isRunning(void);
 int getLineNumber(void);
 void initMe(void);
 
 int main(int argc, char **argv)
 {
+    extern FILE *yyin;
     int tok;
     if(argc < 2)
     {
@@ -22,4 +26,7 @@ int main(int argc, char **argv)
     yyparse();
 
     hashPrint();
+
+    fprintf(stderr, "Super! Compilation successful!\n");
+    exit(0); // 0 is CODE for SUCCESS
 }
