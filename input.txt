@@ -1,5 +1,5 @@
 int:aaaa,
 int:bbbb,
 int: fun(){
-    ababa=23
+    ababa=23 + bbbb - (x)
 }

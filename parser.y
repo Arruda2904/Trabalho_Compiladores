@@ -30,8 +30,12 @@
 programa: decl
     ;
 
-decl: dec ',' decl
-    | dec
+decl: dec resto
+    |
+    ;
+
+resto: ',' dec resto
+    |
     ;
 
 dec: KW_INT ':' TK_IDENTIFIER
@@ -45,7 +49,19 @@ lcmd: cmd lcmd
     |
     ;
 
-cmd: TK_IDENTIFIER '=' LIT_INTEGER
+cmd: TK_IDENTIFIER '=' expr
+    ;
+
+expr: LIT_INTEGER
+    | LIT_CHAR
+    | LIT_STRING
+    | TK_IDENTIFIER
+    | expr '+' expr
+    | expr '-' expr
+    | expr '*' expr
+    | expr '/' expr
+    | expr OPERATOR_EQ expr
+    | '(' expr ')'
     ;
 
 %%
