@@ -34,12 +34,13 @@ decl: dec resto
     |
     ;
 
-resto: ',' dec resto
+resto: ';' dec resto
     |
     ;
 
-dec: KW_INT ':' TK_IDENTIFIER
-    | KW_INT ':' TK_IDENTIFIER '(' ')' body
+dec: tipo ':' TK_IDENTIFIER '=' literal
+    | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER
+    | tipo ':' TK_IDENTIFIER '(' ')' body
     ;
 
 body: '{' lcmd '}'
@@ -64,6 +65,16 @@ expr: LIT_INTEGER
     | '(' expr ')'
     ;
 
+literal:
+	LIT_INTEGER
+	| LIT_CHAR
+	;
+
+tipo:
+    LIT_CHAR
+	| KW_INT
+	| KW_FLOAT
+	;
 %%
 
 int yyerror()

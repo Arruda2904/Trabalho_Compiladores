@@ -1,5 +1,6 @@
-int:aaaa,
-int:bbbb,
+int:aaaa=32;
+int:bbbb='a';
+int[2..3]:nome;
 int: fun(){
     ababa=23 + bbbb - (x)
 }
