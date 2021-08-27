@@ -40,7 +40,7 @@ resto: ';' dec resto
 
 dec: tipo ':' TK_IDENTIFIER '=' literal
     | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array
-    | tipo ':' TK_IDENTIFIER '(' ')' body
+    | tipo ':' TK_IDENTIFIER '(' param_func ')' body
     ;
 
 body: '{' lcmd '}'
@@ -85,6 +85,17 @@ cont_inic_array:
     literal cont_inic_array
     |
     ;
+
+param_func:
+    tipo ':' TK_IDENTIFIER cont_param_func
+    |
+    ;
+
+cont_param_func:
+    ',' param_func
+    |
+    ;
+
 %%
 
 int yyerror()
