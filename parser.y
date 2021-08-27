@@ -39,7 +39,7 @@ resto: ';' dec resto
     ;
 
 dec: tipo ':' TK_IDENTIFIER '=' literal
-    | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER
+    | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array
     | tipo ':' TK_IDENTIFIER '(' ')' body
     ;
 
@@ -71,10 +71,20 @@ literal:
 	;
 
 tipo:
-    LIT_CHAR
+    KW_CHAR
 	| KW_INT
 	| KW_FLOAT
 	;
+
+inic_array:
+    '=' literal cont_inic_array
+    |
+    ;
+
+cont_inic_array:
+    literal cont_inic_array
+    |
+    ;
 %%
 
 int yyerror()
