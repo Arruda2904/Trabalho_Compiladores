@@ -5,11 +5,11 @@ int[2..3]:nome;
 char[2..3]:var=1 2 3 'a' 'c' 4;
 }
 int:fun(int: var,char: blub){
-    ababa=23 + bbbb - (x)
+    nome[1+2]=3+4;
 }
 int:fun(int: var,char: blub){
-    delta=23 + bbbb - (x)
+    delta=23 + bbbb - (x);
 }
 int:fun(int: var,char: blub){
-    bilada=23 + bbbb - (x)
+    print (aaaa);
 }

@@ -48,17 +48,20 @@ func_list: func func_list
     | 
     ;
 
-func: tipo ':' TK_IDENTIFIER '(' param_func ')' body
+func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}'
     ;
 
-body: '{' lcmd '}'
-    ;
-
-lcmd: cmd lcmd
+lcmd: cmd ';' lcmd
     |
     ;
 
-cmd: TK_IDENTIFIER '=' expr
+cmd: atribuicao
+    | controle_fluxo
+    | KW_PRINT cmd_print
+    | KW_RETURN expr 
+    | KW_COMEFROM ':' TK_IDENTIFIER
+    | '{' lcmd '}'
+    | TK_IDENTIFIER
     ;
 
 expr: LIT_INTEGER
@@ -69,38 +72,58 @@ expr: LIT_INTEGER
     | expr '-' expr
     | expr '*' expr
     | expr '/' expr
+    | expr '<' expr
+    | expr '>' expr
+    | expr '|' expr
+    | expr '&' expr
+    | '~' expr
+    | expr OPERATOR_LE expr
+    | expr OPERATOR_GE expr
     | expr OPERATOR_EQ expr
+    | expr OPERATOR_DIF expr
     | '(' expr ')'
     ;
 
-literal:
-	LIT_INTEGER
+literal:LIT_INTEGER
 	| LIT_CHAR
 	;
 
-tipo:
-    KW_CHAR
+tipo:KW_CHAR
 	| KW_INT
 	| KW_FLOAT
 	;
 
-inic_array:
-    '=' literal cont_inic_array
+inic_array:'=' literal cont_inic_array
     |
     ;
 
-cont_inic_array:
-    literal cont_inic_array
+cont_inic_array:literal cont_inic_array
     |
     ;
 
-param_func:
-    tipo ':' TK_IDENTIFIER cont_param_func
+param_func:tipo ':' TK_IDENTIFIER cont_param_func
     |
     ;
 
-cont_param_func:
-    ',' param_func
+cont_param_func:',' param_func
+    |
+    ;
+
+atribuicao: TK_IDENTIFIER '=' expr
+    | TK_IDENTIFIER '[' expr ']' '=' expr
+    ;
+
+controle_fluxo: KW_IF '(' expr ')' cmd
+    | KW_IF '(' expr ')' cmd KW_ELSE cmd
+    | KW_UNTIL '(' expr ')' cmd
+    ;
+
+cmd_print: LIT_STRING cont_cmd_print 
+    | expr cont_cmd_print
+    ;
+
+cont_cmd_print: ',' LIT_STRING cont_cmd_print
+    | ',' expr cont_cmd_print
     |
     ;
 
