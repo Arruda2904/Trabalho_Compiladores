@@ -30,16 +30,12 @@
 programa: decl
     ;
 
-decl: dec resto
+decl: dec decl
     |
     ;
 
-resto: ';' dec resto
-    |
-    ;
-
-dec: tipo ':' TK_IDENTIFIER '=' literal
-    | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array
+dec: tipo ':' TK_IDENTIFIER '=' literal ';'
+    | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array ';'
     | tipo ':' TK_IDENTIFIER '(' param_func ')' body
     ;
 
