@@ -27,16 +27,28 @@
 
 %%
 
-programa: decl
+programa: estrutura
     ;
 
-decl: dec decl
+estrutura: data func_list
+    ;
+
+data:  KW_DATA '{' decl_data '}'
+    ;
+
+decl_data: dec_var decl_data
     |
     ;
 
-dec: tipo ':' TK_IDENTIFIER '=' literal ';'
+dec_var: tipo ':' TK_IDENTIFIER '=' literal ';'
     | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array ';'
-    | tipo ':' TK_IDENTIFIER '(' param_func ')' body
+    ;
+
+func_list: func func_list
+    | 
+    ;
+
+func: tipo ':' TK_IDENTIFIER '(' param_func ')' body
     ;
 
 body: '{' lcmd '}'
