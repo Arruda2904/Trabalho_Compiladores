@@ -10,8 +10,8 @@
 etapa1: y.tab.c lex.yy.c
 	gcc -o etapa2 lex.yy.c -Wno-implicit-function-declaration
 y.tab.c: parser.y
-	yacc -d parser.y 
+	yacc -d parser.y
 lex.yy.c: scanner.l
 	lex scanner.l 
 clean:
-	rm *.o lex.yy.c etapa2
+	rm *.o lex.yy.c etapa2 y.output 

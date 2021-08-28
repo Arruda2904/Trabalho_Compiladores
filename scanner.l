@@ -29,7 +29,7 @@ return                   {return KW_RETURN;}
 ['].[']                  {hashInsert(yytext,LIT_CHAR); return LIT_CHAR;}
 \"(\\.|[^(\n|")])*\"     {hashInsert(yytext,LIT_STRING); return LIT_STRING;}
 
-[a-zA-Z][a-zA-Z0-9 ]+[a-zA-Z0-9]|^[a-zA-z][a-zA-z0-9]$|[a-zA-Z] {hashInsert(yytext,TK_IDENTIFIER); return TK_IDENTIFIER;}
+[a-zA-Z][a-zA-Z0-9 ]*[a-zA-Z0-9]|[a-zA-Z] {hashInsert(yytext,TK_IDENTIFIER); return TK_IDENTIFIER;}
 
 "<="                     {return OPERATOR_LE;}
 ">="                     {return OPERATOR_GE;}

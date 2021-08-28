@@ -25,6 +25,11 @@
 
 %token TOKEN_ERROR
 
+%left '&' '|' '~'
+%left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
+%left '+' '-'
+%left '*' '/'
+
 %%
 
 programa: estrutura
@@ -66,7 +71,6 @@ cmd: atribuicao
 
 expr: LIT_INTEGER
     | LIT_CHAR
-    | LIT_STRING
     | TK_IDENTIFIER
     | expr '+' expr
     | expr '-' expr
@@ -82,6 +86,17 @@ expr: LIT_INTEGER
     | expr OPERATOR_EQ expr
     | expr OPERATOR_DIF expr
     | '(' expr ')'
+    | TK_IDENTIFIER '(' lexpr ')'
+    | KW_READ
+    | TK_IDENTIFIER '[' expr ']'
+    ;
+
+lexpr: expr lexpr_cont
+    |
+    ;
+
+lexpr_cont: ',' expr lexpr_cont
+    |
     ;
 
 literal:LIT_INTEGER

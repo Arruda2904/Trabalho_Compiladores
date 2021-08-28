@@ -11,5 +11,8 @@ int:fun(int: var,char: blub){
     delta=23 + bbbb - (x);
 }
 int:fun(int: var,char: blub){
-    print (aaaa);
+    print "teste", aaa, 32;
+    until(var==10){
+        yy=func();
+    };
 }
