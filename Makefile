@@ -14,4 +14,4 @@ y.tab.c: parser.y
 lex.yy.c: scanner.l
 	lex scanner.l 
 clean:
-	rm *.o lex.yy.c etapa2 y.output 
+	rm *.o lex.yy.c etapa2 y.output y.tab.c y.tab.h
