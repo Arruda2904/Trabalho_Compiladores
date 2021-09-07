@@ -14,5 +14,6 @@ int:fun(int: var,char: blub){
     print "teste", aaa, 32;
     until(var==10){
         yy=func();
+        ;
     };
 }

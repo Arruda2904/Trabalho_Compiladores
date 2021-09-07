@@ -67,6 +67,7 @@ cmd: atribuicao
     | KW_COMEFROM ':' TK_IDENTIFIER
     | '{' lcmd '}'
     | TK_IDENTIFIER
+    |
     ;
 
 expr: LIT_INTEGER
