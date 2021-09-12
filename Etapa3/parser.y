@@ -3,6 +3,7 @@
     #include <stdlib.h>
     #include "hash.h"
     int yyerror();
+    int yylex();
     int getLineNumber();
 %}
 

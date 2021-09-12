@@ -1,9 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "hash.h"
 
 int isRunning(void);
 int getLineNumber(void);
 void initMe(void);
+int yyparse();
 
 int main(int argc, char **argv)
 {

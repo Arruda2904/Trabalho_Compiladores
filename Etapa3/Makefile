@@ -8,7 +8,7 @@
 #
 
 etapa3: main.o lex.yy.o y.tab.o hash.o
-	gcc -c main.o lex.yy.o y.tab.o hash.o -o etapa3
+	gcc main.o lex.yy.o y.tab.o hash.o -o etapa3
 
 main.o: main.c
 	gcc -c main.c
