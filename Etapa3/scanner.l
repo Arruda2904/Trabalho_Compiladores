@@ -49,10 +49,6 @@ return                   {return KW_RETURN;}
 
 %%
 
-#include "y.tab.c"
-#include "main.c"
-#include "hash.c"
-
 int getLineNumber(void)
 {   
     return lineNumber;

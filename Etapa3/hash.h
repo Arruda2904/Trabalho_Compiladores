@@ -2,6 +2,7 @@
 #define HASH_HEADER
 
 #include <stdio.h>
+extern char *yytext;
 
 #define HASH_SIZE 997
 

@@ -8,6 +8,7 @@ void initMe(void);
 int main(int argc, char **argv)
 {
     extern FILE *yyin;
+    // extern char *yytext;
     int tok;
     if(argc < 2)
     {
