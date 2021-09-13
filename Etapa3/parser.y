@@ -2,6 +2,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include "hash.h"
+    #include "ast.h"
     int yyerror();
     int yylex();
     int getLineNumber();
@@ -10,6 +11,7 @@
 %union
 {
     HASH_NODE *symbol;
+    AST *ast;
 }
 
 %token KW_CHAR           
@@ -38,6 +40,8 @@
 %token LIT_STRING        
 
 %token TOKEN_ERROR
+
+%type<ast> expr
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -84,26 +88,26 @@ cmd: atribuicao
     |
     ;
 
-expr: LIT_INTEGER                     { fprintf(stderr,"Recebi %s\n",$1->text); }
-    | LIT_CHAR                        { fprintf(stderr,"Recebi %s\n",$1->text); }
-    | TK_IDENTIFIER                   { fprintf(stderr,"Recebi %s\n",$1->text); }
-    | expr '+' expr
-    | expr '-' expr
+expr: LIT_INTEGER                     {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
+    | LIT_CHAR                        {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
+    | TK_IDENTIFIER                   {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
+    | expr '+' expr                   {$$ = astCreate(AST_ADD,0,$1,$3,0,0);}
+    | expr '-' expr                   {$$ = astCreate(AST_SUB,0,$1,$3,0,0);}
     | expr '*' expr
     | expr '/' expr
     | expr '<' expr
     | expr '>' expr
     | expr '|' expr
     | expr '&' expr
-    | '~' expr
+    | '~' expr                        {$$ = 0;}
     | expr OPERATOR_LE expr
     | expr OPERATOR_GE expr
     | expr OPERATOR_EQ expr
     | expr OPERATOR_DIF expr
-    | '(' expr ')'
-    | TK_IDENTIFIER '(' lexpr ')'
-    | KW_READ
-    | TK_IDENTIFIER '[' expr ']'
+    | '(' expr ')'                    {$$ = $2;}
+    | TK_IDENTIFIER '(' lexpr ')'     {$$ = 0;}
+    | KW_READ                         {$$ = 0;}
+    | TK_IDENTIFIER '[' expr ']'      {$$ = 0;}
     ;
 
 lexpr: expr lexpr_cont
@@ -139,7 +143,7 @@ cont_param_func:',' param_func
     |
     ;
 
-atribuicao: TK_IDENTIFIER '=' expr
+atribuicao: TK_IDENTIFIER '=' expr          {astPrint($3);}
     | TK_IDENTIFIER '[' expr ']' '=' expr
     ;
 
