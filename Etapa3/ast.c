@@ -7,6 +7,7 @@
 AST *astCreate(int type, HASH_NODE *symbol, AST* s0, AST* s1,AST* s2,AST* s3)
 {
     AST* newnode;
+    newnode = (AST*) calloc(1,sizeof(AST));
     newnode->type = type;
     newnode->symbol = symbol;
     newnode->son[0] = s0;
@@ -15,9 +16,13 @@ AST *astCreate(int type, HASH_NODE *symbol, AST* s0, AST* s1,AST* s2,AST* s3)
     newnode->son[3] = s3;
     return newnode;
 }
-void astPrint(AST *node)
+void astPrint(AST *node, int level)
 {
     int i;
+    if(node == 0)
+        return;
+    for (i=0; i < level; ++i)
+        fprintf(stderr,"  ");
     fprintf(stderr,"ast(");
     switch(node->type)
     {
@@ -27,12 +32,13 @@ void astPrint(AST *node)
         default:  fprintf(stderr, "AST_UNKNOWN"); break;
     }
     if (node->symbol != 0)
-        fprintf(stderr,",%s",node->symbol->text);
+        fprintf(stderr,",%s\n",node->symbol->text);
     else
-        fprintf(stderr,"0");
+        fprintf(stderr,"0\n");
     for (i=0; i<MAX_SONS; ++i)
-        astPrint(node->son[i]);
-    fprintf(stderr,")\n");
+        astPrint(node->son[i], level+1);
+    for (i=0; i < level; ++i)
+        fprintf(stderr,"  ");
 }
 
 

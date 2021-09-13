@@ -74,13 +74,13 @@ func_list: func func_list
 func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}'
     ;
 
-lcmd: cmd ';' lcmd
-    |
+lcmd: cmd ';' lcmd                       {/*dolar dolar = astCreate(AST_LCMD,0,dolar1,dolar2,0,0)*/}
+    |                                    {/* aqui vai ficar dolar dolar=0*/}
     ;
 
 cmd: atribuicao
     | controle_fluxo
-    | KW_PRINT cmd_print
+    | KW_PRINT cmd_print 
     | KW_RETURN expr 
     | KW_COMEFROM ':' TK_IDENTIFIER
     | '{' lcmd '}'
@@ -143,7 +143,7 @@ cont_param_func:',' param_func
     |
     ;
 
-atribuicao: TK_IDENTIFIER '=' expr          {astPrint($3);}
+atribuicao: TK_IDENTIFIER '=' expr          {astPrint($3,0); /*create com ponteiro da hash ro identifier e outro pro expr*/}
     | TK_IDENTIFIER '[' expr ']' '=' expr
     ;
 
