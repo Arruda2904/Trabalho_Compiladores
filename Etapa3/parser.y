@@ -69,7 +69,7 @@
 
 %%
 
-estrutura: data func_list                          {astPrint($2,0);}
+estrutura: data func_list                          {astPrint($1,0);}
     ;
 
 data:  KW_DATA '{' decl_data '}'                    {$$=astCreate(AST_DATA,0,0,$3,0,0);};
@@ -122,7 +122,7 @@ expr: LIT_INTEGER                     {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
     | expr OPERATOR_EQ expr           {$$ = astCreate(AST_EQ,0,$1,$3,0,0);}
     | expr OPERATOR_DIF expr          {$$ = astCreate(AST_DIF,0,$1,$3,0,0);}
     | '(' expr ')'                    {$$ = astCreate(AST_PARENTH,0,$2,0,0,0);}
-    | KW_READ                         {$$=astCreate(AST_READ,$1,0,0,0,0);}
+    | KW_READ                         {$$ = astCreate(AST_READ,$1,0,0,0,0);}
     | TK_IDENTIFIER '(' lexpr ')'     {$$ = astCreate(AST_LEXPR,$1,$3,0,0,0);}
     | TK_IDENTIFIER '[' expr ']'      {$$ = astCreate(AST_EXPR_ARRAY,$1,$3,0,0,0);}
     ;
@@ -156,7 +156,7 @@ param_func:tipo ':' TK_IDENTIFIER cont_param_func {$$=astCreate(AST_PARAM_FUNC,$
     |                                             {$$ = 0;}
     ;
 
-cont_param_func:',' param_func                    {$$=astCreate(AST_CONT_PARAM_FUNC,0,$2,0,0,0);}
+cont_param_func:','tipo ':' TK_IDENTIFIER param_func {$$=astCreate(AST_CONT_PARAM_FUNC,$4,$2,$5,0,0);}
     |                                             {$$ = 0;}
     ;
 
