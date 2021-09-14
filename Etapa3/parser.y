@@ -87,8 +87,8 @@ lcmd: cmd ';' lcmd                       {$$ = astCreate(AST_LCMD,0,$1,$3,0,0);}
     ;
 
 cmd:  atribuicao
-    | controle_fluxo
-    | KW_PRINT cmd_print                 {$$ = astCreate(AST_PRINT,0,$2,0,0,0);}
+    | controle_fluxo        
+    | KW_PRINT cmd_print                 {astPrint($2,0);}
     | KW_RETURN expr                     {$$ = astCreate(AST_RETURN,0,$2,0,0,0);}
     | KW_COMEFROM ':' TK_IDENTIFIER      {$$ = astCreate(AST_SYMBOL,$3,0,0,0,0);}
     | '{' lcmd '}'                       {$$ = astCreate(AST_CMD_LCMD,0,$2,0,0,0);}
@@ -151,7 +151,7 @@ cont_param_func:',' param_func
     |
     ;
 
-atribuicao: TK_IDENTIFIER '=' expr              {astPrint($3,0);}
+atribuicao: TK_IDENTIFIER '=' expr              {$$ = astCreate(AST_ATTR,$1,$3,0,0,0);}
     | TK_IDENTIFIER '[' expr ']' '=' expr       {$$ = astCreate(AST_ASSIGN_ARRAY,$1,$3,$6,0,0);}
     ;
 
