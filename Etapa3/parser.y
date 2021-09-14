@@ -23,7 +23,7 @@
 %token KW_ELSE           
 %token KW_UNTIL          
 %token KW_COMEFROM       
-%token KW_READ           
+%token<symbol> KW_READ           
 %token KW_PRINT          
 %token KW_RETURN         
 
@@ -58,6 +58,9 @@
 %type<ast> cont_param_func
 %type<ast> func
 %type<ast> func_list
+%type<ast> data
+%type<ast> decl_data
+%type<ast> dec_var
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -66,21 +69,19 @@
 
 %%
 
-programa: estrutura
-    ;
-
 estrutura: data func_list                          {astPrint($2,0);}
     ;
 
-data:  KW_DATA '{' decl_data '}'
+data:  KW_DATA '{' decl_data '}'                    {$$=astCreate(AST_DATA,0,0,$3,0,0);};
     ;
 
-decl_data: dec_var decl_data
-    |
+decl_data: dec_var decl_data                                 {$$=astCreate(AST_DECL_DATA,0,$1,$2,0,0);}
+    |                                                        {$$ = 0;}
     ;
 
-dec_var: tipo ':' TK_IDENTIFIER '=' literal ';'                                         
+dec_var: tipo ':' TK_IDENTIFIER '=' literal ';'              {$$=astCreate(AST_DEC_VAR,$3,$1,$5,0,0);}                                   
     | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array ';'
+    {$$=astCreate(AST_DEC_ARRAY,$8,$1,astCreate(AST_VEC_SIZE,$3,0,0,0,0),astCreate(AST_VEC_SIZE,$5,0,0,0,0),$9);}  
     ;
 
 func_list: func func_list                                    {$$=astCreate(AST_FUNC_LIST,0,$1,$2,0,0);}
@@ -94,13 +95,13 @@ lcmd: cmd ';' lcmd                       {$$ = astCreate(AST_LCMD,0,$1,$3,0,0);}
     |                                    {$$ = 0;}
     ;
 
-cmd:  atribuicao        
-    | controle_fluxo       
-    | KW_PRINT cmd_print                 {$$ = astCreate(AST_PRINT,0,$2,0,0,0);}
-    | KW_RETURN expr                     {$$ = astCreate(AST_RETURN,0,$2,0,0,0);}
-    | KW_COMEFROM ':' TK_IDENTIFIER      {$$ = astCreate(AST_SYMBOL,$3,0,0,0,0);}
-    | '{' lcmd '}'                       {$$ = astCreate(AST_CMD_LCMD,0,$2,0,0,0);}
-    | TK_IDENTIFIER                      {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
+cmd:  atribuicao                         {$$ = $1;}      
+    | controle_fluxo                     {$$ = $1;}
+    | KW_PRINT cmd_print                 {$$ = $2;}
+    | KW_RETURN expr                     {$$ = $2;}
+    | KW_COMEFROM ':' TK_IDENTIFIER      {$$ = astCreate(AST_COMEFROM,$3,0,0,0,0);}
+    | '{' lcmd '}'                       {$$ = $2;}
+    | TK_IDENTIFIER                      {$$ = astCreate(AST_IDENTIFIER,$1,0,0,0,0);}
     |                                    {$$ = 0;}
     ;
 
@@ -120,9 +121,9 @@ expr: LIT_INTEGER                     {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
     | expr OPERATOR_GE expr           {$$ = astCreate(AST_GE,0,$1,$3,0,0);}
     | expr OPERATOR_EQ expr           {$$ = astCreate(AST_EQ,0,$1,$3,0,0);}
     | expr OPERATOR_DIF expr          {$$ = astCreate(AST_DIF,0,$1,$3,0,0);}
-    | '(' expr ')'                    {$$ = $2;}
+    | '(' expr ')'                    {$$ = astCreate(AST_PARENTH,0,$2,0,0,0);}
+    | KW_READ                         {$$=astCreate(AST_READ,$1,0,0,0,0);}
     | TK_IDENTIFIER '(' lexpr ')'     {$$ = astCreate(AST_LEXPR,$1,$3,0,0,0);}
-    | KW_READ                         {$$ = 0;}
     | TK_IDENTIFIER '[' expr ']'      {$$ = astCreate(AST_EXPR_ARRAY,$1,$3,0,0,0);}
     ;
 
@@ -130,7 +131,7 @@ lexpr: expr lexpr_cont                {$$ = astCreate(AST_LEXPR_PARAM,0,$1,$2,0,
     |                                 {$$ = 0;}
     ;
 
-lexpr_cont: ',' expr lexpr_cont       {$$ = astCreate(AST_LEXPR_PARAM,0,$2,0,0,0);}
+lexpr_cont: ',' expr lexpr_cont       {$$ = astCreate(AST_LEXPR_CONT,0,$2,$3,0,0);}
     |                                 {$$ = 0;}
     ;
 

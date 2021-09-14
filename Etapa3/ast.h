@@ -43,7 +43,15 @@
 #define AST_CONT_PARAM_FUNC 35
 #define AST_FUNC 36
 #define AST_FUNC_LIST 37
-#define AST_DEC_VAR 38
+#define AST_LEXPR_CONT 38
+#define AST_COMEFROM 39
+#define AST_IDENTIFIER 40
+#define AST_READ 41
+#define AST_DATA 42
+#define AST_DECL_DATA 43
+#define AST_DEC_VAR 44
+#define AST_DEC_ARRAY 45
+#define AST_VEC_SIZE 46
 
 
 typedef struct astnode

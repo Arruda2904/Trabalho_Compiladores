@@ -62,7 +62,15 @@ void astPrint(AST *node, int level)
         case AST_CONT_PARAM_FUNC:  fprintf(stderr, "AST_CONT_PARAM_FUNC"); break;
         case AST_FUNC:  fprintf(stderr, "AST_FUNC"); break;
         case AST_FUNC_LIST:  fprintf(stderr, "AST_FUNC_LIST"); break;
-        case AST_DEC_VAR:  fprintf(stderr, "AST_FUNC_LIST"); break;
+        case AST_LEXPR_CONT:  fprintf(stderr, "AST_LEXPR_CONT"); break;
+        case AST_COMEFROM:  fprintf(stderr, "AST_COMEFROM"); break;
+        case AST_IDENTIFIER:  fprintf(stderr, "AST_IDENTIFIER"); break;
+        case AST_READ:  fprintf(stderr, "AST_READ"); break;
+        case AST_DATA:  fprintf(stderr, "AST_DATA"); break;
+        case AST_DECL_DATA:  fprintf(stderr, "AST_DECL_DATA"); break;
+        case AST_DEC_VAR:  fprintf(stderr, "AST_DEC_VAR"); break;
+        case AST_DEC_ARRAY:  fprintf(stderr, "AST_DEC_ARRAY"); break;
+        case AST_VEC_SIZE:  fprintf(stderr, "AST_VEC_SIZE"); break;
         default:  fprintf(stderr, "AST_UNKNOWN"); break;
     }
     if (node->symbol != 0)
