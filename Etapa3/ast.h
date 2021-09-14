@@ -34,6 +34,13 @@
 #define AST_LEXPR_PARAM 26
 #define AST_NOT 27
 #define AST_EXPR_ARRAY 28
+#define AST_CHAR 29
+#define AST_INT 30
+#define AST_FLOAT 31
+#define AST_INIC_ARRAY 32
+#define AST_CONT_INIC_ARRAY 33
+#define AST_PARAM_FUNC 34
+#define AST_CONT_PARAM_FUNC 35
 
 
 typedef struct astnode

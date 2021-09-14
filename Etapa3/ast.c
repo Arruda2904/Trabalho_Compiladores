@@ -53,6 +53,13 @@ void astPrint(AST *node, int level)
         case AST_LEXPR_PARAM:  fprintf(stderr, "AST_LEXPR_PARAM"); break;
         case AST_NOT:  fprintf(stderr, "AST_NOT"); break;
         case AST_EXPR_ARRAY:  fprintf(stderr, "AST_EXPR_ARRAY"); break;
+        case AST_CHAR:  fprintf(stderr, "AST_CHAR"); break;
+        case AST_INT:  fprintf(stderr, "AST_INT"); break;
+        case AST_FLOAT:  fprintf(stderr, "AST_FLOAT"); break;
+        case AST_INIC_ARRAY:  fprintf(stderr, "AST_INIC_ARRAY"); break;
+        case AST_CONT_INIC_ARRAY:  fprintf(stderr, "AST_CONT_INIC_ARRAY"); break;
+        case AST_PARAM_FUNC:  fprintf(stderr, "AST_PARAM_FUNC"); break;
+        case AST_CONT_PARAM_FUNC:  fprintf(stderr, "AST_CONT_PARAM_FUNC"); break;
         default:  fprintf(stderr, "AST_UNKNOWN"); break;
     }
     if (node->symbol != 0)

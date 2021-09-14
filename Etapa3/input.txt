@@ -16,4 +16,8 @@ int:fun(int: var,char: blub){
         yy=func();
         ;
     };
+    if(5){
+        return (x);
+    };
+    comefrom aaa;
 }
