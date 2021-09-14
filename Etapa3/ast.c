@@ -29,6 +29,15 @@ void astPrint(AST *node, int level)
         case AST_SYMBOL:  fprintf(stderr, "AST_SYMBOL"); break;
         case AST_ADD:  fprintf(stderr, "AST_ADD"); break;
         case AST_SUB:  fprintf(stderr, "AST_SUB"); break;
+        case AST_ATTR:  fprintf(stderr, "AST_ATTR"); break;
+        case AST_LCMD:  fprintf(stderr, "AST_LCMD"); break;
+        case AST_IF:  fprintf(stderr, "AST_IF"); break;
+        case AST_IFE:  fprintf(stderr, "AST_IFE"); break;
+        case AST_UNTIL:  fprintf(stderr, "AST_UNTIL"); break;
+        case AST_PRINT:  fprintf(stderr, "AST_PRINT"); break;
+        case AST_RETURN:  fprintf(stderr, "AST_RETURN"); break;
+        case AST_PRINT_PARAM:  fprintf(stderr, "AST_PRINT_PARAM"); break;
+        case AST_ASSIGN_ARRAY:  fprintf(stderr, "AST_ASSIGN_ARRAY"); break;
         default:  fprintf(stderr, "AST_UNKNOWN"); break;
     }
     if (node->symbol != 0)

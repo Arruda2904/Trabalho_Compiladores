@@ -37,11 +37,17 @@
 
 %token<symbol> LIT_INTEGER       
 %token<symbol> LIT_CHAR          
-%token LIT_STRING        
+%token<symbol> LIT_STRING        
 
 %token TOKEN_ERROR
 
 %type<ast> expr
+%type<ast> atribuicao
+%type<ast> controle_fluxo
+%type<ast> cmd_print
+%type<ast> cont_cmd_print
+%type<ast> lcmd
+%type<ast> cmd
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -71,21 +77,21 @@ func_list: func func_list
     | 
     ;
 
-func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}'
+func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}' {astPrint($8,0);}
     ;
 
-lcmd: cmd ';' lcmd                       {/*dolar dolar = astCreate(AST_LCMD,0,dolar1,dolar2,0,0)*/}
-    |                                    {/* aqui vai ficar dolar dolar=0*/}
+lcmd: cmd ';' lcmd                       {$$ = astCreate(AST_LCMD,0,$1,$3,0,0);}
+    |                                    {$$ = 0;}
     ;
 
-cmd: atribuicao
+cmd:  atribuicao
     | controle_fluxo
-    | KW_PRINT cmd_print 
-    | KW_RETURN expr 
-    | KW_COMEFROM ':' TK_IDENTIFIER
-    | '{' lcmd '}'
-    | TK_IDENTIFIER
-    |
+    | KW_PRINT cmd_print                 {$$ = astCreate(AST_PRINT,0,$2,0,0,0);}
+    | KW_RETURN expr                     {$$ = astCreate(AST_RETURN,0,$2,0,0,0);}
+    | KW_COMEFROM ':' TK_IDENTIFIER      {$$ = astCreate(AST_SYMBOL,$3,0,0,0,0);}
+    | '{' lcmd '}'                       {$$ = astCreate(AST_CMD_LCMD,0,$2,0,0,0);}
+    | TK_IDENTIFIER                      {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
+    |                                    {$$ = 0;}
     ;
 
 expr: LIT_INTEGER                     {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
@@ -143,22 +149,22 @@ cont_param_func:',' param_func
     |
     ;
 
-atribuicao: TK_IDENTIFIER '=' expr          {astPrint($3,0); /*create com ponteiro da hash ro identifier e outro pro expr*/}
-    | TK_IDENTIFIER '[' expr ']' '=' expr
+atribuicao: TK_IDENTIFIER '=' expr              {$$ = astCreate(AST_ATTR,$1,$3,0,0,0);}
+    | TK_IDENTIFIER '[' expr ']' '=' expr       {$$ = astCreate(AST_ASSIGN_ARRAY,$1,$3,$6,0,0);}
     ;
 
-controle_fluxo: KW_IF '(' expr ')' cmd
-    | KW_IF '(' expr ')' cmd KW_ELSE cmd
-    | KW_UNTIL '(' expr ')' cmd
+controle_fluxo: KW_IF '(' expr ')' cmd          {$$ = astCreate(AST_IF,0,$3,$5,0,0);}
+    | KW_IF '(' expr ')' cmd KW_ELSE cmd        {$$ = astCreate(AST_IFE,0,$3,$5,$7,0);}
+    | KW_UNTIL '(' expr ')' cmd                 {$$ = astCreate(AST_UNTIL,0,$3,$5,0,0);}
     ;
 
-cmd_print: LIT_STRING cont_cmd_print 
-    | expr cont_cmd_print
+cmd_print: LIT_STRING cont_cmd_print            {$$ = astCreate(AST_PRINT_PARAM,$1,$2,0,0,0);}
+    | expr cont_cmd_print                       {$$ = astCreate(AST_PRINT_PARAM,0,$1,$2,0,0);}
     ;
 
-cont_cmd_print: ',' LIT_STRING cont_cmd_print
-    | ',' expr cont_cmd_print
-    |
+cont_cmd_print: ',' LIT_STRING cont_cmd_print   {$$ = astCreate(AST_PRINT_PARAM,$2,$3,0,0,0);}
+    | ',' expr cont_cmd_print                   {$$ = astCreate(AST_PRINT_PARAM,0,$2,$3,0,0);}
+    |                                           {$$ = 0;}
     ;
 
 %%
