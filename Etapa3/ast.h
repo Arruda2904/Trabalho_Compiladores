@@ -41,6 +41,9 @@
 #define AST_CONT_INIC_ARRAY 33
 #define AST_PARAM_FUNC 34
 #define AST_CONT_PARAM_FUNC 35
+#define AST_FUNC 36
+#define AST_FUNC_LIST 37
+#define AST_DEC_VAR 38
 
 
 typedef struct astnode

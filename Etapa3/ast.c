@@ -60,6 +60,9 @@ void astPrint(AST *node, int level)
         case AST_CONT_INIC_ARRAY:  fprintf(stderr, "AST_CONT_INIC_ARRAY"); break;
         case AST_PARAM_FUNC:  fprintf(stderr, "AST_PARAM_FUNC"); break;
         case AST_CONT_PARAM_FUNC:  fprintf(stderr, "AST_CONT_PARAM_FUNC"); break;
+        case AST_FUNC:  fprintf(stderr, "AST_FUNC"); break;
+        case AST_FUNC_LIST:  fprintf(stderr, "AST_FUNC_LIST"); break;
+        case AST_DEC_VAR:  fprintf(stderr, "AST_FUNC_LIST"); break;
         default:  fprintf(stderr, "AST_UNKNOWN"); break;
     }
     if (node->symbol != 0)

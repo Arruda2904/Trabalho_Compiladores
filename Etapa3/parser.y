@@ -56,6 +56,8 @@
 %type<ast> cont_inic_array
 %type<ast> param_func
 %type<ast> cont_param_func
+%type<ast> func
+%type<ast> func_list
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -67,7 +69,7 @@
 programa: estrutura
     ;
 
-estrutura: data func_list
+estrutura: data func_list                          {astPrint($2,0);}
     ;
 
 data:  KW_DATA '{' decl_data '}'
@@ -77,22 +79,22 @@ decl_data: dec_var decl_data
     |
     ;
 
-dec_var: tipo ':' TK_IDENTIFIER '=' literal ';'
+dec_var: tipo ':' TK_IDENTIFIER '=' literal ';'                                         
     | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array ';'
     ;
 
-func_list: func func_list
-    | 
+func_list: func func_list                                    {$$=astCreate(AST_FUNC_LIST,0,$1,$2,0,0);}
+    |                                                        {$$ = 0;}
     ;
 
-func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}' {/*astPrint($8,0);*/}
+func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}' {$$=astCreate(AST_FUNC,$3,$1,$5,$8,0);}	
     ;
 
-lcmd: cmd ';' lcmd                       {astPrint($1,0);}
+lcmd: cmd ';' lcmd                       {$$ = astCreate(AST_LCMD,0,$1,$3,0,0);}
     |                                    {$$ = 0;}
     ;
 
-cmd:  atribuicao
+cmd:  atribuicao        
     | controle_fluxo       
     | KW_PRINT cmd_print                 {$$ = astCreate(AST_PRINT,0,$2,0,0,0);}
     | KW_RETURN expr                     {$$ = astCreate(AST_RETURN,0,$2,0,0,0);}
