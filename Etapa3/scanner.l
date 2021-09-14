@@ -28,7 +28,7 @@ return                   {return KW_RETURN;}
 
 [0-9]+                   {yylval.symbol = hashInsert(yytext,LIT_INTEGER); return LIT_INTEGER;}
 ['].[']                  {yylval.symbol = hashInsert(yytext,LIT_CHAR); return LIT_CHAR;}
-\"(\\.|[^(\n|")])*\"     {hashInsert(yytext,LIT_STRING); return LIT_STRING;}
+\"(\\.|[^(\n|")])*\"     {yylval.symbol = hashInsert(yytext,LIT_STRING); return LIT_STRING;}
 
 [a-zA-Z][a-zA-Z0-9 ]*[a-zA-Z0-9]|[a-zA-Z] {yylval.symbol = hashInsert(yytext,TK_IDENTIFIER); return TK_IDENTIFIER;}
 

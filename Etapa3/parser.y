@@ -69,7 +69,7 @@
 
 %%
 
-estrutura: data func_list                          {astPrint($1,0);}
+estrutura: data func_list                          {astPrint($2,0);}
     ;
 
 data:  KW_DATA '{' decl_data '}'                    {$$=astCreate(AST_DATA,0,0,$3,0,0);};
