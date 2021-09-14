@@ -38,6 +38,21 @@ void astPrint(AST *node, int level)
         case AST_RETURN:  fprintf(stderr, "AST_RETURN"); break;
         case AST_PRINT_PARAM:  fprintf(stderr, "AST_PRINT_PARAM"); break;
         case AST_ASSIGN_ARRAY:  fprintf(stderr, "AST_ASSIGN_ARRAY"); break;
+        case AST_MULT:  fprintf(stderr, "AST_MULT"); break;
+        case AST_DIV:  fprintf(stderr, "AST_DIV"); break;
+        case AST_LESS:  fprintf(stderr, "AST_LESS"); break;
+        case AST_GREATER:  fprintf(stderr, "AST_GREATER"); break;
+        case AST_OR:  fprintf(stderr, "AST_OR"); break;
+        case AST_AND:  fprintf(stderr, "AST_AND"); break;
+        case AST_PARENTH:  fprintf(stderr, "AST_PARENTH"); break;
+        case AST_LE:  fprintf(stderr, "AST_LE"); break;
+        case AST_GE:  fprintf(stderr, "AST_GE"); break;
+        case AST_EQ:  fprintf(stderr, "AST_EQ"); break;
+        case AST_DIF:  fprintf(stderr, "AST_DIF"); break;
+        case AST_LEXPR:  fprintf(stderr, "AST_LEXPR"); break;
+        case AST_LEXPR_PARAM:  fprintf(stderr, "AST_LEXPR_PARAM"); break;
+        case AST_NOT:  fprintf(stderr, "AST_NOT"); break;
+        case AST_EXPR_ARRAY:  fprintf(stderr, "AST_EXPR_ARRAY"); break;
         default:  fprintf(stderr, "AST_UNKNOWN"); break;
     }
     if (node->symbol != 0)
@@ -46,8 +61,8 @@ void astPrint(AST *node, int level)
         fprintf(stderr,"0\n");
     for (i=0; i<MAX_SONS; ++i)
         astPrint(node->son[i], level+1);
-    for (i=0; i < level; ++i)
-        fprintf(stderr,"  ");
+    /*for (i=0; i < level; ++i)
+        fprintf(stderr,"  -");*/
 }
 
 

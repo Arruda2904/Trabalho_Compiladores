@@ -48,6 +48,8 @@
 %type<ast> cont_cmd_print
 %type<ast> lcmd
 %type<ast> cmd
+%type<ast> lexpr
+%type<ast> lexpr_cont
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -77,7 +79,7 @@ func_list: func func_list
     | 
     ;
 
-func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}' {astPrint($8,0);}
+func: tipo ':' TK_IDENTIFIER '(' param_func ')' '{' lcmd '}' {/*astPrint($8,0);*/}
     ;
 
 lcmd: cmd ';' lcmd                       {$$ = astCreate(AST_LCMD,0,$1,$3,0,0);}
@@ -99,29 +101,29 @@ expr: LIT_INTEGER                     {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
     | TK_IDENTIFIER                   {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
     | expr '+' expr                   {$$ = astCreate(AST_ADD,0,$1,$3,0,0);}
     | expr '-' expr                   {$$ = astCreate(AST_SUB,0,$1,$3,0,0);}
-    | expr '*' expr
-    | expr '/' expr
-    | expr '<' expr
-    | expr '>' expr
-    | expr '|' expr
-    | expr '&' expr
-    | '~' expr                        {$$ = 0;}
-    | expr OPERATOR_LE expr
-    | expr OPERATOR_GE expr
-    | expr OPERATOR_EQ expr
-    | expr OPERATOR_DIF expr
+    | expr '*' expr                   {$$ = astCreate(AST_MULT,0,$1,$3,0,0);}
+    | expr '/' expr                   {$$ = astCreate(AST_DIV,0,$1,$3,0,0);}
+    | expr '<' expr                   {$$ = astCreate(AST_LESS,0,$1,$3,0,0);}
+    | expr '>' expr                   {$$ = astCreate(AST_GREATER,0,$1,$3,0,0);}
+    | expr '|' expr                   {$$ = astCreate(AST_OR,0,$1,$3,0,0);}
+    | expr '&' expr                   {$$ = astCreate(AST_AND,0,$1,$3,0,0);}
+    | '~' expr                        {$$ = astCreate(AST_NOT,0,$2,0,0,0);}
+    | expr OPERATOR_LE expr           {$$ = astCreate(AST_LE,0,$1,$3,0,0);}
+    | expr OPERATOR_GE expr           {$$ = astCreate(AST_GE,0,$1,$3,0,0);}
+    | expr OPERATOR_EQ expr           {$$ = astCreate(AST_EQ,0,$1,$3,0,0);}
+    | expr OPERATOR_DIF expr          {$$ = astCreate(AST_DIF,0,$1,$3,0,0);}
     | '(' expr ')'                    {$$ = $2;}
-    | TK_IDENTIFIER '(' lexpr ')'     {$$ = 0;}
+    | TK_IDENTIFIER '(' lexpr ')'     {$$ = astCreate(AST_LEXPR,$1,$3,0,0,0);}
     | KW_READ                         {$$ = 0;}
-    | TK_IDENTIFIER '[' expr ']'      {$$ = 0;}
+    | TK_IDENTIFIER '[' expr ']'      {$$ = astCreate(AST_EXPR_ARRAY,$1,$3,0,0,0);}
     ;
 
-lexpr: expr lexpr_cont
-    |
+lexpr: expr lexpr_cont                {$$ = astCreate(AST_LEXPR_PARAM,0,$1,$2,0,0);}
+    |                                 {$$ = 0;}
     ;
 
-lexpr_cont: ',' expr lexpr_cont
-    |
+lexpr_cont: ',' expr lexpr_cont       {$$ = astCreate(AST_LEXPR_PARAM,0,$2,0,0,0);}
+    |                                 {$$ = 0;}
     ;
 
 literal:LIT_INTEGER
@@ -149,7 +151,7 @@ cont_param_func:',' param_func
     |
     ;
 
-atribuicao: TK_IDENTIFIER '=' expr              {$$ = astCreate(AST_ATTR,$1,$3,0,0,0);}
+atribuicao: TK_IDENTIFIER '=' expr              {astPrint($3,0);}
     | TK_IDENTIFIER '[' expr ']' '=' expr       {$$ = astCreate(AST_ASSIGN_ARRAY,$1,$3,$6,0,0);}
     ;
 

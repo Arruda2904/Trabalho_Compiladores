@@ -19,6 +19,21 @@
 #define AST_CMD_LCMD 11
 #define AST_PRINT_PARAM 12
 #define AST_ASSIGN_ARRAY 13
+#define AST_MULT 14
+#define AST_DIV 15
+#define AST_LESS 16
+#define AST_GREATER 17
+#define AST_OR 18
+#define AST_AND 19
+#define AST_PARENTH 20
+#define AST_LE 21
+#define AST_GE 22
+#define AST_EQ 23
+#define AST_DIF 24
+#define AST_LEXPR 25
+#define AST_LEXPR_PARAM 26
+#define AST_NOT 27
+#define AST_EXPR_ARRAY 28
 
 
 typedef struct astnode

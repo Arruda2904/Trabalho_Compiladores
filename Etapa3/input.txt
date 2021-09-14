@@ -8,7 +8,7 @@ int:fun(int: var,char: blub){
     nome[1+2]=3+4;
 }
 int:fun(int: var,char: blub){
-    delta=23 + bbbb - (x);
+    delta=99 + b - (x) + 1111;
 }
 int:fun(int: var,char: blub){
     print "teste", aaa, 32;
