@@ -61,6 +61,8 @@
 %type<ast> data
 %type<ast> decl_data
 %type<ast> dec_var
+%type<ast> programa
+%type<ast> inicio
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -68,20 +70,21 @@
 %left '*' '/'
 
 %%
-
-estrutura: data func_list                          {astPrint($2,0);}
+inicio: programa                                  {$$ = $1;astDecompile($1);}
     ;
 
-data:  KW_DATA '{' decl_data '}'                    {$$=astCreate(AST_DATA,0,0,$3,0,0);};
+programa: data func_list                          { astPrint($1,0); astPrint($2,0);astCreate(AST_PROG,0,$1,$2,0,0);}
     ;
 
-decl_data: dec_var decl_data                                 {$$=astCreate(AST_DECL_DATA,0,$1,$2,0,0);}
+data:  KW_DATA '{' decl_data '}'                    {$$ = astCreate(AST_DATA,0,$3,0,0,0);};
+    ;
+
+decl_data: dec_var decl_data                                 {$$ = astCreate(AST_DECL_DATA,0,$1,$2,0,0);}
     |                                                        {$$ = 0;}
     ;
 
 dec_var: tipo ':' TK_IDENTIFIER '=' literal ';'              {$$=astCreate(AST_DEC_VAR,$3,$1,$5,0,0);}                                   
-    | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array ';'
-    {$$=astCreate(AST_DEC_ARRAY,$8,$1,astCreate(AST_VEC_SIZE,$3,0,0,0,0),astCreate(AST_VEC_SIZE,$5,0,0,0,0),$9);}  
+    | tipo '['LIT_INTEGER OPERATOR_RANGE LIT_INTEGER']' ':' TK_IDENTIFIER inic_array ';' {$$=astCreate(AST_DEC_ARRAY,$8,$1,astCreate(AST_VEC_SIZE,$3,0,0,0,0),astCreate(AST_VEC_SIZE,$5,0,0,0,0),$9);}  
     ;
 
 func_list: func func_list                                    {$$=astCreate(AST_FUNC_LIST,0,$1,$2,0,0);}

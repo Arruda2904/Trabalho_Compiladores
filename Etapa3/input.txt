@@ -1,8 +1,8 @@
 data {
-int:aaaa=32;
-char:bbbb='a';
-int[2..3]:nome;
-char[2..3]:var=1 2 3 'a' 'c' 4;
+    int:aaaa=32;
+    char:bbbb='a';
+    int[2..3]:nome;
+    char[2..3]:var=1 2 3 'a' 'c' 4;
 }
 int:fun(int: var,char: blub){
     nome[1+2]=3+4;

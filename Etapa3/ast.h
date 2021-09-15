@@ -52,6 +52,7 @@
 #define AST_DEC_VAR 44
 #define AST_DEC_ARRAY 45
 #define AST_VEC_SIZE 46
+#define AST_PROG 47
 
 
 typedef struct astnode
@@ -63,6 +64,7 @@ typedef struct astnode
 
 AST *astCreate(int type, HASH_NODE *symbol, AST* s0, AST* s1,AST* s2,AST* s3);
 void astPrint(AST *node,int level);
+void astDecompile(AST *node);
 
 
 #endif

@@ -7,7 +7,7 @@
 # Therefore, there must be a header of it to be included in lexer.l
 #
 
-etapa3: main.o lex.yy.o y.tab.o hash.o ast.o
+etapa3: y.tab.o lex.yy.o hash.o ast.o main.o
 	gcc main.o lex.yy.o y.tab.o hash.o ast.o -o etapa3
 
 main.o: main.c
@@ -32,4 +32,4 @@ lex.yy.c: scanner.l
 	lex scanner.l 
 
 clean:
-	rm lex.yy.c y.tab.c *.o etapa3
+	rm lex.yy.c y.tab.c *.o etapa3 output.txt y.tab.h
