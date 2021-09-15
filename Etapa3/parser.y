@@ -62,7 +62,6 @@
 %type<ast> decl_data
 %type<ast> dec_var
 %type<ast> programa
-%type<ast> inicio
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -70,10 +69,8 @@
 %left '*' '/'
 
 %%
-inicio: programa                                  {$$ = $1;astDecompile($1);}
-    ;
 
-programa: data func_list                          { astPrint($1,0); astPrint($2,0);astCreate(AST_PROG,0,$1,$2,0,0);}
+programa: data func_list                          {$$ = astCreate(AST_PROG,0,$1,$2,0,0); astPrint($$,0); astDecompile($$);}
     ;
 
 data:  KW_DATA '{' decl_data '}'                    {$$ = astCreate(AST_DATA,0,$3,0,0,0);};
@@ -100,10 +97,10 @@ lcmd: cmd ';' lcmd                       {$$ = astCreate(AST_LCMD,0,$1,$3,0,0);}
 
 cmd:  atribuicao                         {$$ = $1;}      
     | controle_fluxo                     {$$ = $1;}
-    | KW_PRINT cmd_print                 {$$ = $2;}
-    | KW_RETURN expr                     {$$ = $2;}
+    | KW_PRINT cmd_print                 {$$ = astCreate(AST_PRINT,0,$2,0,0,0);}
+    | KW_RETURN expr                     {$$ = astCreate(AST_RETURN,0,$2,0,0,0);}
     | KW_COMEFROM ':' TK_IDENTIFIER      {$$ = astCreate(AST_COMEFROM,$3,0,0,0,0);}
-    | '{' lcmd '}'                       {$$ = $2;}
+    | '{' lcmd '}'                       {$$ = astCreate(AST_CMD_LCMD,0,$2,0,0,0);}
     | TK_IDENTIFIER                      {$$ = astCreate(AST_IDENTIFIER,$1,0,0,0,0);}
     |                                    {$$ = 0;}
     ;

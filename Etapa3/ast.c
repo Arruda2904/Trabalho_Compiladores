@@ -113,6 +113,7 @@ void astDecompile(AST *node)
         astDecompile(node->son[1]);
         fprintf(out,"){\n");
         astDecompile(node->son[2]);
+        fprintf(out,"}\n");
         break;
     case AST_PARAM_FUNC:
         astDecompile(node->son[0]);
@@ -123,6 +124,29 @@ void astDecompile(AST *node)
         fprintf(out,",");
         astDecompile(node->son[0]);
         fprintf(out,":%s",node->symbol->text);
+        astDecompile(node->son[1]);
+        break;
+    case AST_LCMD:
+        astDecompile(node->son[0]);
+        fprintf(out,";\n ");
+        astDecompile(node->son[1]);
+        break;
+    case AST_CMD_LCMD:
+        fprintf(out,"{\n");
+        astDecompile(node->son[0]);
+        fprintf(out,"\n}");
+        break;
+    case AST_ATTR:
+        fprintf(out,"%s", node->symbol->text);
+        fprintf(out," = ");
+        astDecompile(node->son[0]);
+        break;
+    case AST_ASSIGN_ARRAY:
+        fprintf(out, "%s", node->symbol->text);
+        fprintf(out, "[");
+        astDecompile(node->son[0]);
+        fprintf(out, "]");
+        fprintf(out, " = ");
         astDecompile(node->son[1]);
         break;
     case AST_SYMBOL:
@@ -143,10 +167,12 @@ void astDecompile(AST *node)
         fprintf(out, "~");
         astDecompile(node->son[0]);
         break;
-    case AST_LEXPR_PARAM:
+    case AST_LEXPR:
+        fprintf(out,"%s", node->symbol->text);
+        fprintf(out," (");
         astDecompile(node->son[0]);
-        astDecompile(node->son[1]);
-        break;
+        fprintf(out,")");
+        break; 
     case AST_ADD:
         astDecompile(node->son[0]);
         fprintf(out, "+");
@@ -252,26 +278,48 @@ void astDecompile(AST *node)
         break;
     case AST_IF:
         fprintf(out,"if(");
-        astDecompilation(node->son[0]);
+        astDecompile(node->son[0]);
         fprintf(out,")  \n");
-        astDecompilation(node->son[1]);
+        astDecompile(node->son[1]);
         fprintf(out," ");
         break;
     case AST_IFE:
         fprintf(out,"if(");
-        astDecompilation(node->son[0]);
+        astDecompile(node->son[0]);
         fprintf(out,")  ");
-        astDecompilation(node->son[1]);
+        astDecompile(node->son[1]);
         fprintf(out," ");
         fprintf(out,"else\n");
-        astDecompilation(node->son[2]);
+        astDecompile(node->son[2]);
         break;
     case AST_UNTIL:
         fprintf(out,"until (");
-        astDecompilation(node->son[0]);
+        astDecompile(node->son[0]);
         fprintf(out,")  ");
-        astDecompilation(node->son[1]);
+        astDecompile(node->son[1]);
         fprintf(out," ");
+        break;
+    case AST_PRINT:
+        fprintf(out,"print "); astDecompile(node->son[0]);
+        break;
+    case AST_PRINT_PARAM:
+        if(node->son[1] != NULL)
+        {
+            astDecompile(node->son[0]); fprintf(out,","); astDecompile(node->son[1]);
+        }
+        else
+            astDecompile(node->son[0]);
+        break;
+    case AST_READ:
+        fprintf(out,"read ");
+        break;
+    case AST_RETURN:
+        fprintf(out,"return ");
+        astDecompile(node->son[0]);
+        break;
+    case AST_COMEFROM:
+        fprintf(out,"comefrom: ");
+        fprintf(out,"%s", node->symbol->text);
         break;
     }  
 }

@@ -20,5 +20,5 @@ int:fun(int: var,char: blub){
     if(5){
         return (x);
     };
-    comefrom aaa;
+    comefrom: aaa;
 }
