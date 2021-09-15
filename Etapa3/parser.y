@@ -169,12 +169,12 @@ controle_fluxo: KW_IF '(' expr ')' cmd          {$$ = astCreate(AST_IF,0,$3,$5,0
     | KW_UNTIL '(' expr ')' cmd                 {$$ = astCreate(AST_UNTIL,0,$3,$5,0,0);}
     ;
 
-cmd_print: LIT_STRING cont_cmd_print            {$$ = astCreate(AST_PRINT_PARAM,$1,$2,0,0,0);}
+cmd_print: LIT_STRING cont_cmd_print            {$$ = astCreate(AST_PRINT_STRING,$1,$2,0,0,0);}
     | expr cont_cmd_print                       {$$ = astCreate(AST_PRINT_PARAM,0,$1,$2,0,0);}
     ;
 
-cont_cmd_print: ',' LIT_STRING cont_cmd_print   {$$ = astCreate(AST_PRINT_PARAM,$2,$3,0,0,0);}
-    | ',' expr cont_cmd_print                   {$$ = astCreate(AST_PRINT_PARAM,0,$2,$3,0,0);}
+cont_cmd_print: ',' LIT_STRING cont_cmd_print   {$$ = astCreate(AST_PRINT_STRING2,$2,$3,0,0,0);}
+    | ',' expr cont_cmd_print                   {$$ = astCreate(AST_PRINT_PARAM2,0,$2,$3,0,0);}
     |                                           {$$ = 0;}
     ;
 

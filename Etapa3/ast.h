@@ -53,6 +53,9 @@
 #define AST_DEC_ARRAY 45
 #define AST_VEC_SIZE 46
 #define AST_PROG 47
+#define AST_PRINT_STRING 48
+#define AST_PRINT_STRING2 49
+#define AST_PRINT_PARAM2 50
 
 
 typedef struct astnode

@@ -73,6 +73,9 @@ void astPrint(AST *node, int level)
         case AST_DEC_ARRAY:  fprintf(stderr, "AST_DEC_ARRAY"); break;
         case AST_VEC_SIZE:  fprintf(stderr, "AST_VEC_SIZE"); break;
         case AST_PROG:  fprintf(stderr, "AST_PROG"); break;
+        case AST_PRINT_STRING:  fprintf(stderr, "AST_PRINT_STRING"); break;
+        case AST_PRINT_STRING2:  fprintf(stderr, "AST_PRINT_STRING2"); break;
+        case AST_PRINT_PARAM2:  fprintf(stderr, "AST_PRINT_PARAM2"); break;
         default:  fprintf(stderr, "AST_UNKNOWN"); break;
     }
     if (node->symbol)
@@ -300,15 +303,25 @@ void astDecompile(AST *node)
         fprintf(out," ");
         break;
     case AST_PRINT:
-        fprintf(out,"print "); astDecompile(node->son[0]);
+        fprintf(out,"print ");
+        astDecompile(node->son[0]);
+        break;
+    case AST_PRINT_STRING:
+        fprintf(out,"%s",node->symbol->text);
+        astDecompile(node->son[0]);
         break;
     case AST_PRINT_PARAM:
-        if(node->son[1] != NULL)
-        {
-            astDecompile(node->son[0]); fprintf(out,","); astDecompile(node->son[1]);
-        }
-        else
-            astDecompile(node->son[0]);
+        astDecompile(node->son[0]);
+        astDecompile(node->son[1]);
+        break;
+    case AST_PRINT_STRING2:
+        fprintf(out,", %s",node->symbol->text);
+        astDecompile(node->son[0]);
+        break;
+    case AST_PRINT_PARAM2:
+        fprintf(out,",");
+        astDecompile(node->son[0]);
+        astDecompile(node->son[1]);
         break;
     case AST_READ:
         fprintf(out,"read ");
