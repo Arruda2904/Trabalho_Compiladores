@@ -126,8 +126,6 @@ void astDecompile(AST *node)
     case AST_CONT_PARAM_FUNC:
         fprintf(out,",");
         astDecompile(node->son[0]);
-        fprintf(out,":%s",node->symbol->text);
-        astDecompile(node->son[1]);
         break;
     case AST_LCMD:
         astDecompile(node->son[0]);

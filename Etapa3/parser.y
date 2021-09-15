@@ -156,7 +156,7 @@ param_func:tipo ':' TK_IDENTIFIER cont_param_func {$$=astCreate(AST_PARAM_FUNC,$
     |                                             {$$ = 0;}
     ;
 
-cont_param_func:','tipo ':' TK_IDENTIFIER param_func {$$=astCreate(AST_CONT_PARAM_FUNC,$4,$2,$5,0,0);}
+cont_param_func:',' param_func                    {$$=astCreate(AST_CONT_PARAM_FUNC,0,$2,0,0,0);}
     |                                             {$$ = 0;}
     ;
 
