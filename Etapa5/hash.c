@@ -62,3 +62,11 @@ void hashPrint(void)
             fprintf(stderr,"Table[%d] has %s\n",i,node->text);
 
 }
+
+HASH_NODE* makeTemp(void) {
+    static int serial = 0;
+    char buffer[256] = "";
+
+    sprintf(buffer,"mYWeeirT_emp%d",serial++);
+    hashInsert(buffer,SYMBOL_VARIABLE);
+}

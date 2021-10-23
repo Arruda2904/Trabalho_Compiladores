@@ -63,6 +63,7 @@
 %type<ast> decl_data
 %type<ast> dec_var
 %type<ast> programa
+%type<ast> tacs
 
 %left '&' '|' '~'
 %left '<' '>' OPERATOR_LE OPERATOR_GE OPERATOR_EQ OPERATOR_DIF
@@ -70,6 +71,8 @@
 %left '*' '/'
 
 %%
+tacs: programa                                     {tacPrintBackwards(generateCode($1));}
+    ;
 
 programa: data func_list                          {$$ = astCreate(AST_PROG,0,$1,$2,0,0); astPrint($$,0); astDecompile($$);}
     ;
@@ -108,9 +111,7 @@ cmd:  atribuicao                         {$$ = $1;}
 
 expr: LIT_INTEGER                     {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
     | LIT_CHAR                        {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
-    | TK_IDENTIFIER                   {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);
-                                        tacPrint(tacCreate(TAC_SYMBOL,$1,0,0));
-                                      }
+    | TK_IDENTIFIER                   {$$ = astCreate(AST_SYMBOL,$1,0,0,0,0);}
     | expr '+' expr                   {$$ = astCreate(AST_ADD,0,$1,$3,0,0);}
     | expr '-' expr                   {$$ = astCreate(AST_SUB,0,$1,$3,0,0);}
     | expr '*' expr                   {$$ = astCreate(AST_MULT,0,$1,$3,0,0);}
