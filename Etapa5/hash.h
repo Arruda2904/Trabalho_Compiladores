@@ -9,6 +9,7 @@ extern char *yytext;
 #define HASH_SIZE 997
 
 #define SYMBOL_VARIABLE 6
+#define SYMBOL_LABEL 9
 
 typedef struct hash_node
 {
@@ -23,5 +24,6 @@ HASH_NODE* hashFind(char *text);
 HASH_NODE* hashInsert(char *text, int type);
 void hashPrint(void);
 HASH_NODE* makeTemp(void);
+HASH_NODE* makeLabel(void);
 
 #endif

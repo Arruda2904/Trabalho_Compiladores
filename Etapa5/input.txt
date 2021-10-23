@@ -21,7 +21,7 @@ yy = func ();
 } ;
  if(5)  
 {
-return (x);
+a = 6 + 7;
  
 } ;
  comefrom: aaa;

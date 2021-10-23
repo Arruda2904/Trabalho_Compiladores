@@ -8,6 +8,8 @@
 #define TAC_ADD 2
 #define TAC_SUB 3
 #define TAC_COPY 4
+#define TAC_JFALSE 5
+#define TAC_LABEL 6
 
 typedef struct tac_node {
     int type;
