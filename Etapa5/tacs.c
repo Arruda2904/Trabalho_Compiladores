@@ -43,6 +43,7 @@ void tacPrint(TAC* tac) {
         case TAC_COPY: fprintf(stderr,"TAC_COPY"); break;
         case TAC_JFALSE: fprintf(stderr,"TAC_JFALSE"); break;
         case TAC_LABEL: fprintf(stderr,"TAC_LABEL"); break;
+        case TAC_JUMP: fprintf(stderr,"TAC_JUMP"); break;
         default: fprintf(stderr,"TAC_UNKNOWN"); break;
     }
 
@@ -74,7 +75,7 @@ TAC* tacJoin(TAC* l1, TAC* l2) {
 
 // CODE GENERATION
 TAC *makeBinOp(TAC* code[], int type);
-TAC *makeIf(TAC* code0, TAC* code1);
+TAC *makeIf(TAC* code0, TAC* code1, TAC* code2);
 
 TAC* generateCode(AST *node) {
     int i;
@@ -112,7 +113,8 @@ TAC* generateCode(AST *node) {
         // case PRINT faltou
         case AST_READ: return tacCreate(TAC_READ,node->symbol,0,0);break;
 
-        case AST_IF: result = makeIf(code[0],code[1]);break;
+        case AST_IF: result = makeIf(code[0],code[1], code[2]);break;
+        case AST_IFE: result = makeIf(code[0], code[1], code[2]);break;
         default: result = tacJoin(code[0],tacJoin(code[1], tacJoin(code[2], code[3]))); break;
     }
 
@@ -125,16 +127,31 @@ TAC *makeBinOp(TAC* code[], int type)
     tacCreate(type,makeTemp(),code[0] ? code[0]->res : 0, code[1] ? code[1]->res : 0)));
 }
 
-TAC *makeIf(TAC* code0, TAC* code1) {
+TAC *makeIf(TAC* code0, TAC* code1, TAC* code2) {
     TAC *jumptac = 0;
     TAC *labeltac = 0;
     HASH_NODE *newlabel = 0;
-
     newlabel = makeLabel();
 
     jumptac = tacCreate(TAC_JFALSE,newlabel,code0 ? code0->res : 0,0);
     jumptac->prev = code0;
     labeltac = tacCreate(TAC_LABEL,newlabel,0,0);
     labeltac->prev = code1;
-    return tacJoin(jumptac,labeltac);
+
+    if(code2) {
+        fprintf(stderr, "\n\n Entrou no code2 \n\n");
+        TAC *jumptacelse = 0;
+        TAC *labeltacelse = 0;
+        HASH_NODE *newlabelelse = 0;
+        newlabelelse = makeLabel();
+
+        jumptacelse = tacCreate(TAC_JUMP,newlabelelse,0,0);
+        jumptacelse->prev = 0;
+        labeltacelse = tacCreate(TAC_LABEL,newlabelelse,0,0);
+        labeltacelse->prev = code2;
+
+        return tacJoin(tacJoin(tacJoin(jumptac,labeltac),jumptacelse),labeltacelse);
+    } else {
+        return tacJoin(jumptac,labeltac);
+    }
 }

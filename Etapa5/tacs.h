@@ -24,6 +24,7 @@
 #define TAC_ASSIGN_ARRAY 18 
 #define TAC_RETURN 19
 #define TAC_READ 20
+#define TAC_JUMP 21
 
 
 typedef struct tac_node {
