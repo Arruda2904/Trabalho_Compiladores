@@ -44,6 +44,8 @@ void tacPrint(TAC* tac) {
         case TAC_JFALSE: fprintf(stderr,"TAC_JFALSE"); break;
         case TAC_LABEL: fprintf(stderr,"TAC_LABEL"); break;
         case TAC_JUMP: fprintf(stderr,"TAC_JUMP"); break;
+        case TAC_BEGIN_FUNC: fprintf(stderr,"TAC_BEGIN_FUNC"); break;
+        case TAC_END_FUNC: fprintf(stderr,"TAC_END_FUNC"); break;
         default: fprintf(stderr,"TAC_UNKNOWN"); break;
     }
 
@@ -76,6 +78,7 @@ TAC* tacJoin(TAC* l1, TAC* l2) {
 // CODE GENERATION
 TAC *makeBinOp(TAC* code[], int type);
 TAC *makeIf(TAC* code0, TAC* code1, TAC* code2);
+TAC* makeFunc(TAC* symbol, TAC* code1, TAC* code2);
 
 TAC* generateCode(AST *node) {
     int i;
@@ -109,12 +112,14 @@ TAC* generateCode(AST *node) {
             code[0] ? code[0]->res : 0,code[1] ? code[1]->res : 0)); break;
       	case AST_ASSIGN_ARRAY: result = tacJoin(tacJoin(code[0],code[1]),tacCreate(TAC_ASSIGN_ARRAY,
           node->symbol,code[1] ? code[1]->res : 0,code[0] ? code[0]->res : 0)); break;
-        case AST_RETURN: return tacJoin(code[0],tacCreate(TAC_RETURN,code[0]->res,0,0)); break;
+        case AST_RETURN: result = tacJoin(code[0],tacCreate(TAC_RETURN,code[0]->res,0,0)); break;
         // case PRINT faltou
-        case AST_READ: return tacCreate(TAC_READ,node->symbol,0,0);break;
+        case AST_READ: result = tacCreate(TAC_READ,node->symbol,0,0);break;
 
         case AST_IF: result = makeIf(code[0],code[1], code[2]);break;
         case AST_IFE: result = makeIf(code[0], code[1], code[2]);break;
+        case AST_FUNC: result = makeFunc(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[1], code[2]);
+
         default: result = tacJoin(code[0],tacJoin(code[1], tacJoin(code[2], code[3]))); break;
     }
 
@@ -139,7 +144,6 @@ TAC *makeIf(TAC* code0, TAC* code1, TAC* code2) {
     labeltac->prev = code1;
 
     if(code2) {
-        fprintf(stderr, "\n\n Entrou no code2 \n\n");
         TAC *jumptacelse = 0;
         TAC *labeltacelse = 0;
         HASH_NODE *newlabelelse = 0;
@@ -154,4 +158,10 @@ TAC *makeIf(TAC* code0, TAC* code1, TAC* code2) {
     } else {
         return tacJoin(jumptac,labeltac);
     }
+}
+
+TAC* makeFunc(TAC* symbol, TAC* code1, TAC* code2)
+{
+	return tacJoin(tacJoin(tacJoin( tacCreate(TAC_BEGIN_FUNC, symbol->res, 0, 0), code1) ,
+     code2 ), tacCreate(TAC_END_FUNC, symbol->res, 0, 0));
 }
