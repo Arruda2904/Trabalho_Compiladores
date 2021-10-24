@@ -27,6 +27,10 @@
 #define TAC_JUMP 21
 #define TAC_BEGIN_FUNC 22
 #define TAC_END_FUNC 23
+#define TAC_INIC_ARRAY 24
+#define TAC_CONT_INIC_ARRAY 25
+#define TAC_PRINT 26
+#define TAC_COMEFROM 27
 
 
 typedef struct tac_node {

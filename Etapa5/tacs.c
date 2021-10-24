@@ -35,11 +35,12 @@ void tacPrint(TAC* tac) {
         case TAC_EQ: fprintf(stderr,"TAC_EQ"); break;
         case TAC_DIF: fprintf(stderr,"TAC_DIF"); break;
         case TAC_READ: fprintf(stderr,"TAC_READ"); break;
-
+        case TAC_INIC_ARRAY: fprintf(stderr,"TAC_INIC_ARRAY"); break;
+        case TAC_CONT_INIC_ARRAY: fprintf(stderr,"TAC_CONT_INIC_ARRAY"); break;
+        case TAC_PRINT: fprintf(stderr,"TAC_PRINT"); break;
+        case TAC_COMEFROM: fprintf(stderr,"TAC_COMEFROM"); break;
         case TAC_ASSIGN_ARRAY: fprintf(stderr,"TAC_ASSIGN_ARRAY"); break;
         case TAC_RETURN: fprintf(stderr,"TAC_RETURN"); break;
-
-
         case TAC_COPY: fprintf(stderr,"TAC_COPY"); break;
         case TAC_JFALSE: fprintf(stderr,"TAC_JFALSE"); break;
         case TAC_LABEL: fprintf(stderr,"TAC_LABEL"); break;
@@ -107,14 +108,17 @@ TAC* generateCode(AST *node) {
         case AST_GE: result = makeBinOp(code, TAC_GE); break;
         case AST_EQ: result = makeBinOp(code, TAC_EQ); break;
         case AST_DIF: result = makeBinOp(code, TAC_DIF); break;
+        case AST_INIC_ARRAY: result = makeBinOp(code, TAC_INIC_ARRAY); break;
+        case AST_CONT_INIC_ARRAY: result = makeBinOp(code, TAC_CONT_INIC_ARRAY); break;
 
         case AST_ATTR: result = tacJoin(code[0],tacCreate(TAC_COPY,node->symbol,
             code[0] ? code[0]->res : 0,code[1] ? code[1]->res : 0)); break;
       	case AST_ASSIGN_ARRAY: result = tacJoin(tacJoin(code[0],code[1]),tacCreate(TAC_ASSIGN_ARRAY,
           node->symbol,code[1] ? code[1]->res : 0,code[0] ? code[0]->res : 0)); break;
         case AST_RETURN: result = tacJoin(code[0],tacCreate(TAC_RETURN,code[0]->res,0,0)); break;
-        // case PRINT faltou
+        case AST_PRINT: return makeBinOp(code, TAC_PRINT);
         case AST_READ: result = tacCreate(TAC_READ,node->symbol,0,0);break;
+        case AST_COMEFROM: return makeBinOp(code, TAC_COMEFROM);
 
         case AST_IF: result = makeIf(code[0],code[1], code[2]);break;
         case AST_IFE: result = makeIf(code[0], code[1], code[2]);break;
