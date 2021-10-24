@@ -35,6 +35,8 @@ void tacPrint(TAC* tac) {
         case TAC_EQ: fprintf(stderr,"TAC_EQ"); break;
         case TAC_DIF: fprintf(stderr,"TAC_DIF"); break;
 
+        case TAC_ASSIGN_ARRAY: fprintf(stderr,"TAC_ASSIGN_ARRAY"); break;
+
         case TAC_COPY: fprintf(stderr,"TAC_COPY"); break;
         case TAC_JFALSE: fprintf(stderr,"TAC_JFALSE"); break;
         case TAC_LABEL: fprintf(stderr,"TAC_LABEL"); break;
@@ -101,6 +103,9 @@ TAC* generateCode(AST *node) {
 
         case AST_ATTR: result = tacJoin(code[0],tacCreate(TAC_COPY,node->symbol,
             code[0] ? code[0]->res : 0,code[1] ? code[1]->res : 0)); break;
+      	case AST_ASSIGN_ARRAY: result = tacJoin(tacJoin(code[0],code[1]),tacCreate(TAC_ASSIGN_ARRAY,
+          node->symbol,code[1] ? code[1]->res : 0,code[0] ? code[0]->res : 0)); break;
+
         case AST_IF: result = makeIf(code[0],code[1]);break;
         default: result = tacJoin(code[0],tacJoin(code[1], tacJoin(code[2], code[3]))); break;
     }

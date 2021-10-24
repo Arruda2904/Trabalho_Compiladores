@@ -21,6 +21,7 @@
 #define TAC_GE 15
 #define TAC_EQ 16
 #define TAC_DIF 17
+#define TAC_ASSIGN_ARRAY 18 
 
 
 typedef struct tac_node {
