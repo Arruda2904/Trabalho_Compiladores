@@ -10,6 +10,18 @@
 #define TAC_COPY 4
 #define TAC_JFALSE 5
 #define TAC_LABEL 6
+#define TAC_MULT 7
+#define TAC_DIV 8
+#define TAC_LESS 9
+#define TAC_GREATER 10
+#define TAC_OR 11
+#define TAC_AND 12
+#define TAC_NOT 13
+#define TAC_LE 14
+#define TAC_GE 15
+#define TAC_EQ 16
+#define TAC_DIF 17
+
 
 typedef struct tac_node {
     int type;

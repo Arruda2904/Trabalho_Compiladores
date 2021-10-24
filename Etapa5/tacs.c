@@ -23,8 +23,20 @@ void tacPrint(TAC* tac) {
         case TAC_SYMBOL: fprintf(stderr,"TAC_SYMBOL"); break;
         case TAC_ADD: fprintf(stderr,"TAC_ADD"); break;
         case TAC_SUB: fprintf(stderr,"TAC_SUB"); break;
+        case TAC_MULT: fprintf(stderr,"TAC_MULT"); break;
+        case TAC_DIV: fprintf(stderr,"TAC_DIV"); break;
+        case TAC_LESS: fprintf(stderr,"TAC_LESS"); break;
+        case TAC_GREATER: fprintf(stderr,"TAC_GREATER"); break;
+        case TAC_OR: fprintf(stderr,"TAC_OR"); break;
+        case TAC_AND: fprintf(stderr,"TAC_AND"); break;
+        case TAC_NOT: fprintf(stderr,"TAC_NOT"); break;
+        case TAC_LE: fprintf(stderr,"TAC_LE"); break;
+        case TAC_GE: fprintf(stderr,"TAC_GE"); break;
+        case TAC_EQ: fprintf(stderr,"TAC_EQ"); break;
+        case TAC_DIF: fprintf(stderr,"TAC_DIF"); break;
+
         case TAC_COPY: fprintf(stderr,"TAC_COPY"); break;
-        case TAC_JFALSE: fprintf(stderr,"TAC_FALSE"); break;
+        case TAC_JFALSE: fprintf(stderr,"TAC_JFALSE"); break;
         case TAC_LABEL: fprintf(stderr,"TAC_LABEL"); break;
         default: fprintf(stderr,"TAC_UNKNOWN"); break;
     }
@@ -56,7 +68,7 @@ TAC* tacJoin(TAC* l1, TAC* l2) {
 
 
 // CODE GENERATION
-
+TAC *makeBinOp(TAC* code[], int type);
 TAC *makeIf(TAC* code0, TAC* code1);
 
 TAC* generateCode(AST *node) {
@@ -73,8 +85,20 @@ TAC* generateCode(AST *node) {
     // PROCESS THIS NODE
     switch(node->type) {
         case AST_SYMBOL: result = tacCreate(TAC_SYMBOL,node->symbol,0,0); break;
-        case AST_ADD: result = tacJoin(tacJoin(code[0],code[1]),
-            tacCreate(TAC_ADD,makeTemp(),code[0] ? code[0]->res : 0,code[1] ? code[1]->res : 0)); break;
+        case AST_ADD: result = makeBinOp(code, TAC_ADD); break;
+        case AST_SUB: result = makeBinOp(code, TAC_SUB); break;
+        case AST_MULT: result = makeBinOp(code, TAC_MULT); break;
+        case AST_DIV: result = makeBinOp(code, TAC_DIV); break;
+        case AST_LESS: result = makeBinOp(code, TAC_LESS); break;
+        case AST_GREATER: result = makeBinOp(code, TAC_GREATER); break;
+        case AST_OR: result = makeBinOp(code, TAC_OR); break;
+        case AST_AND: result = makeBinOp(code, TAC_AND); break;
+        case AST_NOT: result = makeBinOp(code, TAC_NOT); break;
+        case AST_LE: result = makeBinOp(code, TAC_LE); break;
+        case AST_GE: result = makeBinOp(code, TAC_GE); break;
+        case AST_EQ: result = makeBinOp(code, TAC_EQ); break;
+        case AST_DIF: result = makeBinOp(code, TAC_DIF); break;
+
         case AST_ATTR: result = tacJoin(code[0],tacCreate(TAC_COPY,node->symbol,
             code[0] ? code[0]->res : 0,code[1] ? code[1]->res : 0)); break;
         case AST_IF: result = makeIf(code[0],code[1]);break;
@@ -82,6 +106,12 @@ TAC* generateCode(AST *node) {
     }
 
     return result;
+}
+
+TAC *makeBinOp(TAC* code[], int type)
+{
+	return tacJoin(code[0],tacJoin(code[1],
+    tacCreate(type,makeTemp(),code[0] ? code[0]->res : 0, code[1] ? code[1]->res : 0)));
 }
 
 TAC *makeIf(TAC* code0, TAC* code1) {
