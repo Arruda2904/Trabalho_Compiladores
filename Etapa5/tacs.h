@@ -35,6 +35,7 @@
 #define TAC_DEC_VAR 29
 #define TAC_DEC_ARRAY 30
 #define TAC_UNTIL 31
+#define TAC_VEC_SIZE 32
 
 
 typedef struct tac_node {

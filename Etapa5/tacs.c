@@ -51,6 +51,7 @@ void tacPrint(TAC* tac) {
         case TAC_DEC_VAR: fprintf(stderr,"TAC_DEC_VAR"); break;
         case TAC_DEC_ARRAY: fprintf(stderr,"TAC_DEC_ARRAY"); break;
         case TAC_UNTIL: fprintf(stderr,"TAC_UNTIL"); break;
+        case TAC_VEC_SIZE: fprintf(stderr,"TAC_VEC_SIZE"); break;
         
         default: fprintf(stderr,"TAC_UNKNOWN"); break;
     }
@@ -116,7 +117,7 @@ TAC* generateCode(AST *node) {
         case AST_DIF: result = makeBinOp(code, TAC_DIF); break;
         case AST_INIC_ARRAY: result = makeBinOp(code, TAC_INIC_ARRAY); break;
         case AST_CONT_INIC_ARRAY: result = makeBinOp(code, TAC_CONT_INIC_ARRAY); break;
-
+        case AST_VEC_SIZE: result = makeBinOp(code, TAC_VEC_SIZE); break;
         case AST_ATTR: result = tacJoin(code[0],tacCreate(TAC_COPY,node->symbol,
             code[0] ? code[0]->res : 0,code[1] ? code[1]->res : 0)); break;
       	case AST_ASSIGN_ARRAY: result = tacJoin(tacJoin(code[0],code[1]),tacCreate(TAC_ASSIGN_ARRAY,
@@ -125,13 +126,14 @@ TAC* generateCode(AST *node) {
         case AST_PRINT: return makeBinOp(code, TAC_PRINT);
         case AST_READ: result = tacCreate(TAC_READ,node->symbol,0,0);break;
         case AST_COMEFROM: return makeBinOp(code, TAC_COMEFROM);
-
         case AST_IF: return makeIf(code[0],code[1], code[2]);break;
         case AST_IFE: return makeIf(code[0], code[1], code[2]);break;
         case AST_FUNC: return makeFunc(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[1], code[2]);
         case AST_DATA: return makeFunc(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[0], code[1]);
-        case AST_DEC_VAR: return tacJoin(code[1],tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
-        case AST_DEC_ARRAY: return tacJoin(tacJoin(code[1],code[2]),tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
+        case AST_DEC_VAR: return tacJoin(code[1],tacCreate(TAC_COPY,
+        node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
+        case AST_DEC_ARRAY: return tacJoin(tacJoin(code[1],code[2]),
+        tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
         case AST_UNTIL: return makeUntil(code[0],code[1]);break;
 
         default: result = tacJoin(code[0],tacJoin(code[1], tacJoin(code[2], code[3]))); break;
