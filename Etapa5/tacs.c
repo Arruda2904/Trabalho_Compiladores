@@ -49,7 +49,8 @@ void tacPrint(TAC* tac) {
         case TAC_END_FUNC: fprintf(stderr,"TAC_END_FUNC"); break;
         case TAC_DATA: fprintf(stderr,"TAC_DATA"); break;
         case TAC_DEC_VAR: fprintf(stderr,"TAC_DEC_VAR"); break;
-        //case TAC_DEC_ARRAY: fprintf(stderr,"TAC_DEC_ARRAY"); break;
+        case TAC_DEC_ARRAY: fprintf(stderr,"TAC_DEC_ARRAY"); break;
+        case TAC_UNTIL: fprintf(stderr,"TAC_UNTIL"); break;
         
         default: fprintf(stderr,"TAC_UNKNOWN"); break;
     }
@@ -84,6 +85,7 @@ TAC* tacJoin(TAC* l1, TAC* l2) {
 TAC *makeBinOp(TAC* code[], int type);
 TAC *makeIf(TAC* code0, TAC* code1, TAC* code2);
 TAC* makeFunc(TAC* symbol, TAC* code1, TAC* code2);
+TAC *makeUntil(TAC* code0, TAC* code1);
 
 TAC* generateCode(AST *node) {
     int i;
@@ -130,8 +132,7 @@ TAC* generateCode(AST *node) {
         case AST_DATA: return makeFunc(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[0], code[1]);
         case AST_DEC_VAR: return tacJoin(code[1],tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
         case AST_DEC_ARRAY: return tacJoin(tacJoin(code[1],code[2]),tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
-
-
+        case AST_UNTIL: return makeUntil(code[0],code[1]);break;
 
         default: result = tacJoin(code[0],tacJoin(code[1], tacJoin(code[2], code[3]))); break;
     }
@@ -177,4 +178,30 @@ TAC* makeFunc(TAC* symbol, TAC* code1, TAC* code2)
 {
 	return tacJoin(tacJoin(tacJoin( tacCreate(TAC_BEGIN_FUNC, symbol->res, 0, 0), code1) ,
      code2 ), tacCreate(TAC_END_FUNC, symbol->res, 0, 0));
+}
+
+TAC *makeUntil(TAC* code0, TAC* code1) {
+    TAC *jumptac = 0;
+    TAC *labeltac = 0;
+    HASH_NODE *newlabel = 0;
+
+    newlabel = makeLabel();
+
+    jumptac = tacCreate(TAC_JFALSE,newlabel,code0 ? code0->res : 0,0);
+    jumptac->prev = code0;
+    labeltac = tacCreate(TAC_LABEL,newlabel,0,0);
+    labeltac->prev = code1;
+
+    TAC *jumpuntiltac = 0;
+    TAC *labeluntiltac = 0;
+    HASH_NODE *newlabeluntil = 0;
+    
+    newlabeluntil = makeLabel();
+    
+    jumpuntiltac = tacCreate(TAC_JUMP,newlabeluntil,0,0);
+    jumpuntiltac->prev = 0;
+    labeluntiltac = tacCreate(TAC_LABEL,newlabeluntil,0,0);
+    labeluntiltac->prev = 0;
+    return tacJoin(tacJoin(tacJoin(jumptac,labeltac),jumpuntiltac),labeluntiltac);
+    
 }
