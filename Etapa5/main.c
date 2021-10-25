@@ -1,3 +1,4 @@
+/*Gabriel Arruda dos Santos 00290400*/
 #include <stdlib.h>
 #include <stdio.h>
 #include "hash.h"

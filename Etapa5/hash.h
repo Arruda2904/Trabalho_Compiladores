@@ -1,3 +1,4 @@
+/*Gabriel Arruda dos Santos 00290400*/
 #ifndef HASH_HEADER
 #define HASH_HEADER
 

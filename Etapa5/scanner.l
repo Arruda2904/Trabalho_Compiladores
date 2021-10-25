@@ -1,4 +1,5 @@
 %{
+    /*Gabriel Arruda dos Santos 00290400*/
     #include "hash.h"
     #include "ast.h"
     #include "y.tab.h"

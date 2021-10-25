@@ -1,3 +1,4 @@
+/*Gabriel Arruda dos Santos 00290400*/
 #include "hash.h"
 
 HASH_NODE*Table[HASH_SIZE];
