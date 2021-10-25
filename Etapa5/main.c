@@ -12,19 +12,15 @@ FILE *out;
 int main(int argc, char **argv)
 {
     int tok;
-    if (argc < 3)
+
+    if (0==(yyin = fopen("input.txt","r")))
     {
-        printf("call: ./etapa3 input.txt output.txt\n");
+        printf("Cannot open file input.txt \n");
         exit(1);
     }
-    if (0==(yyin = fopen(argv[1],"r")))
+    if (0==(out = fopen("output.txt","w"))) 
     {
-        printf("Cannot open file %s... \n",argv[1]);
-        exit(1);
-    }
-    if (0==(out = fopen(argv[2],"w"))) 
-    {
-        printf("Cannot open file %s... \n",argv[2]);
+        printf("Cannot open file output.txt \n");
         exit(1);
     }
     initMe();

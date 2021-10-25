@@ -188,7 +188,6 @@ TAC *makeUntil(TAC* code0, TAC* code1) {
     HASH_NODE *newlabel = 0;
 
     newlabel = makeLabel();
-
     jumptac = tacCreate(TAC_JFALSE,newlabel,code0 ? code0->res : 0,0);
     jumptac->prev = code0;
     labeltac = tacCreate(TAC_LABEL,newlabel,0,0);
@@ -199,11 +198,10 @@ TAC *makeUntil(TAC* code0, TAC* code1) {
     HASH_NODE *newlabeluntil = 0;
     
     newlabeluntil = makeLabel();
-    
     jumptacuntil = tacCreate(TAC_JUMP,newlabeluntil,0,0);
     jumptacuntil->prev = 0;
     labeltacuntil = tacCreate(TAC_LABEL,newlabeluntil,0,0);
     labeltacuntil->prev = 0;
+
     return tacJoin(tacJoin(tacJoin(jumptac,labeltac),jumptacuntil),labeltacuntil);
-    
 }
