@@ -48,8 +48,8 @@ void tacPrint(TAC* tac) {
         case TAC_BEGIN_FUNC: fprintf(stderr,"TAC_BEGIN_FUNC"); break;
         case TAC_END_FUNC: fprintf(stderr,"TAC_END_FUNC"); break;
         case TAC_DATA: fprintf(stderr,"TAC_DATA"); break;
-        //case AST_DEC_VAR: fprintf(stderr,"AST_DEC_VAR"); break;
-        //case AST_DEC_ARRAY: fprintf(stderr,"AST_DEC_ARRAY"); break;
+        case TAC_DEC_VAR: fprintf(stderr,"TAC_DEC_VAR"); break;
+        //case TAC_DEC_ARRAY: fprintf(stderr,"TAC_DEC_ARRAY"); break;
         
         default: fprintf(stderr,"TAC_UNKNOWN"); break;
     }
@@ -128,8 +128,8 @@ TAC* generateCode(AST *node) {
         case AST_IFE: return makeIf(code[0], code[1], code[2]);break;
         case AST_FUNC: return makeFunc(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[1], code[2]);
         case AST_DATA: return makeFunc(tacCreate(TAC_SYMBOL, node->symbol, 0, 0), code[0], code[1]);
-        //case AST_DEC_VAR: result = tacJoin(code[1],tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
-        //case AST_DEC_ARRAY: result = tacJoin(tacJoin(code[1],code[2]),tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
+        case AST_DEC_VAR: return tacJoin(code[1],tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
+        case AST_DEC_ARRAY: return tacJoin(tacJoin(code[1],code[2]),tacCreate(TAC_COPY,node->symbol,code[1] ? code[1]->res : 0,code[2] ? code[2]->res : 0));break;
 
 
 
