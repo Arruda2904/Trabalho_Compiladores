@@ -31,6 +31,9 @@
 #define TAC_CONT_INIC_ARRAY 25
 #define TAC_PRINT 26
 #define TAC_COMEFROM 27
+#define TAC_DATA 28
+#define TAC_DEC_VAR 29
+#define TAC_DEC_ARRAY 30
 
 
 typedef struct tac_node {
