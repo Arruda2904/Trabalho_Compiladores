@@ -192,16 +192,16 @@ TAC *makeUntil(TAC* code0, TAC* code1) {
     labeltac = tacCreate(TAC_LABEL,newlabel,0,0);
     labeltac->prev = code1;
 
-    TAC *jumpuntiltac = 0;
-    TAC *labeluntiltac = 0;
+    TAC *jumptacuntil = 0;
+    TAC *labeltacuntil = 0;
     HASH_NODE *newlabeluntil = 0;
     
     newlabeluntil = makeLabel();
     
-    jumpuntiltac = tacCreate(TAC_JUMP,newlabeluntil,0,0);
-    jumpuntiltac->prev = 0;
-    labeluntiltac = tacCreate(TAC_LABEL,newlabeluntil,0,0);
-    labeluntiltac->prev = 0;
-    return tacJoin(tacJoin(tacJoin(jumptac,labeltac),jumpuntiltac),labeluntiltac);
+    jumptacuntil = tacCreate(TAC_JUMP,newlabeluntil,0,0);
+    jumptacuntil->prev = 0;
+    labeltacuntil = tacCreate(TAC_LABEL,newlabeluntil,0,0);
+    labeltacuntil->prev = 0;
+    return tacJoin(tacJoin(tacJoin(jumptac,labeltac),jumptacuntil),labeltacuntil);
     
 }
