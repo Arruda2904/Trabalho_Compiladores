@@ -69,7 +69,7 @@ HASH_NODE* makeTemp(void) {
     char buffer[256] = "";
 
     sprintf(buffer,"mYWeeirT_emp%d",serial++);
-    hashInsert(buffer,SYMBOL_VARIABLE);
+    return hashInsert(buffer,SYMBOL_VARIABLE);
 }
 
 HASH_NODE* makeLabel(void) {
@@ -77,5 +77,5 @@ HASH_NODE* makeLabel(void) {
     char buffer[256] = "";
 
     sprintf(buffer,"mYLabule%d",serial++);
-    hashInsert(buffer,SYMBOL_LABEL);
+    return hashInsert(buffer,SYMBOL_LABEL);
 }

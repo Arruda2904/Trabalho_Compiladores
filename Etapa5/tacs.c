@@ -12,6 +12,7 @@ TAC* tacCreate(int type, HASH_NODE* res, HASH_NODE* op1, HASH_NODE* op2) {
     newtac->op2 = op2;
     newtac->next = 0;
     newtac->prev = 0;
+    return newtac;
 }
 void tacPrint(TAC* tac) {
     if(!tac) return;
